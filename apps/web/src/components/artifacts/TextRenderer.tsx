@@ -248,9 +248,9 @@ export function TextRendererComponent(props: TextRendererProps) {
 
   return (
     <div className="w-full h-full mt-2 flex flex-col border-t-[1px] border-gray-200 overflow-y-auto py-5 relative">
-      {props.isHovering && artifact && (
+      {artifact && (
         <div className="absolute flex gap-2 top-2 right-4 z-10">
-          <CopyText currentArtifactContent={getArtifactContent(artifact)} />
+          <CopyText className="text-black-copy" currentArtifactContent={getArtifactContent(artifact)} />
           {/* <ViewRawText isRawView={isRawView} setIsRawView={setIsRawView} /> */}
         </div>
       )}
