@@ -169,7 +169,7 @@ a {
   width: 268px;
   height: 68px;
   object-fit: none;
-  object-position: -26.8px 0;
+  object-position: 26.8px 0;
   display: block;
-  clip-path: inset(0 200px 0 0);
+  clip-path: inset(0 100px 0 0);
 }

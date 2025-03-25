@@ -96,6 +96,7 @@ export function CanvasComponent() {
   };
 
   return (
+    <div className="pr-3 pl-6 pt-3 pb-2 flex flex-row gap-4 items-center justify-between bg-[rgba(20,110,98,0.29)]">
     <ResizablePanelGroup direction="horizontal" className="h-screen">
       {!chatStarted && (
         <NoSSRWrapper>
@@ -187,6 +188,7 @@ export function CanvasComponent() {
         </>
       )}
     </ResizablePanelGroup>
+    </div>
   );
 }
 

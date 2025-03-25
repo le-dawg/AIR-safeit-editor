@@ -1,101 +1,22 @@
 import { ProgrammingLanguageOptions } from "@opencanvas/shared/types";
 import { ThreadPrimitive, useThreadRuntime } from "@assistant-ui/react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FC, useMemo } from "react";
-import { TighterText } from "../ui/header";
-import { NotebookPen } from "lucide-react";
-import { ProgrammingLanguagesDropdown } from "../ui/programming-lang-dropdown";
+import { FC, useState } from "react";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Calendar } from "../ui/calendar";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { cn } from "@/lib/utils";
+import { JOURNAL_SYSTEM_PROMPT, formatPromptWithVars } from "@/config/journal-prompts";
 
-const QUICK_START_PROMPTS_SEARCH = [
-  "",
-];
-
-const QUICK_START_PROMPTS = [
-  "Start with a new report for Person X",
-  "Begin with a new journal entry for school Y",
-  "Help me write a journal entry under the rules for Region Z.",
-];
-
-function getRandomPrompts(prompts: string[], count: number = 4): string[] {
-  return [...prompts].sort(() => Math.random() - 0.5).slice(0, count);
+interface JournalFormData {
+  date: Date;
+  author: string;
+  subject: string;
+  content: string;
 }
-
-interface QuickStartButtonsProps {
-  handleQuickStart: (
-    type: "text" | "code",
-    language?: ProgrammingLanguageOptions
-  ) => void;
-  composer: React.ReactNode;
-  searchEnabled: boolean;
-}
-
-interface QuickStartPromptsProps {
-  searchEnabled: boolean;
-}
-
-const QuickStartPrompts = ({ searchEnabled }: QuickStartPromptsProps) => {
-  const threadRuntime = useThreadRuntime();
-
-  const handleClick = (text: string) => {
-    threadRuntime.append({
-      role: "user",
-      content: [{ type: "text", text }],
-    });
-  };
-
-  const selectedPrompts = useMemo(
-    () =>
-      getRandomPrompts(
-        searchEnabled ? QUICK_START_PROMPTS_SEARCH : QUICK_START_PROMPTS
-      ),
-    [searchEnabled]
-  );
-
-  return (
-    <div className="flex flex-col w-full gap-2">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
-        {selectedPrompts.map((prompt, index) => (
-          <Button
-            key={`quick-start-prompt-${index}`}
-            onClick={() => handleClick(prompt)}
-            variant="outline"
-            className="min-h-[60px] w-full flex items-center justify-center p-6 whitespace-normal text-gray-500 hover:text-gray-700 transition-colors ease-in rounded-2xl"
-          >
-            <p className="text-center break-words text-sm font-normal">
-              {prompt}
-            </p>
-          </Button>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const QuickStartButtons = (props: QuickStartButtonsProps) => {
-  return (
-    <div className="flex flex-col gap-8 items-center justify-center w-full">
-      <div className="flex flex-col gap-6">
-        <p className="text-gray-600 text-sm">Start with a blank canvas</p>
-        <div className="flex flex-row gap-1 items-center justify-center w-full">
-          <Button
-            variant="outline"
-            className="text-gray-500 hover:text-gray-700 transition-colors ease-in rounded-2xl flex items-center justify-center gap-2 w-[250px] h-[64px]"
-            onClick={() => props.handleQuickStart("text")}
-          >
-            New Report Draft
-            <NotebookPen />
-          </Button>
-        </div>
-      </div>
-      <div className="flex flex-col gap-6 mt-2 w-full">
-        <p className="text-gray-600 text-sm">or with a message</p>
-        {props.composer}
-        <QuickStartPrompts searchEnabled={props.searchEnabled} />
-      </div>
-    </div>
-  );
-};
 
 interface ThreadWelcomeProps {
   handleQuickStart: (
@@ -106,29 +27,119 @@ interface ThreadWelcomeProps {
   searchEnabled: boolean;
 }
 
-export const ThreadWelcome: FC<ThreadWelcomeProps> = (
-  props: ThreadWelcomeProps
-) => {
+const JournalEntryForm = ({ handleQuickStart }: { handleQuickStart: ThreadWelcomeProps['handleQuickStart'] }) => {
+  const [date, setDate] = useState<Date>(new Date());
+  const [formData, setFormData] = useState<JournalFormData>({
+    date: new Date(),
+    author: "",
+    subject: "",
+    content: ""
+  });
+
+  const threadRuntime = useThreadRuntime();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // First navigate to canvas view
+    handleQuickStart("text");
+
+    // Format the prompt with all available variables
+    const prompt = formatPromptWithVars(JOURNAL_SYSTEM_PROMPT, {
+      content: formData.content,
+      date: format(formData.date, "PPP"),
+      author: formData.author,
+      subject: formData.subject
+    });
+    
+    // Add system prompt and user content to the thread
+    await threadRuntime.append({
+      role: "system",
+      content: [{ type: "text", text: prompt }],
+    });
+    
+    await threadRuntime.append({
+      role: "user",
+      content: [{ type: "text", text: formData.content }],
+    });
+  };
+
   return (
-    <ThreadPrimitive.Empty>
-      <div className="flex items-center justify-center mt-16 w-full">
-        <div className="text-center max-w-3xl w-full">
-          <Avatar className="mx-auto">
-            <AvatarImage src="/safe-it-logo.png" alt="Safe-IT Logo" className="object-cover cropped-bg" />
-            <AvatarFallback>SI</AvatarFallback>
-          </Avatar>
-          <TighterText className="mt-4 text-lg font-medium">
-            What would you like to write today?
-          </TighterText>
-          <div className="mt-8 w-full">
-            <QuickStartButtons
-              composer={props.composer}
-              handleQuickStart={props.handleQuickStart}
-              searchEnabled={props.searchEnabled}
-            />
-          </div>
+    <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto p-8 rounded-lg bg-teal-50">
+      <div className="space-y-6">
+        <div className="flex flex-col space-y-2">
+          <label className="text-sm font-medium text-gray-700">Date</label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full justify-start text-left font-normal"
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {format(date, "PPP")}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={(date) => {
+                  if (date) {
+                    setDate(date);
+                    setFormData(prev => ({ ...prev, date }));
+                  }
+                }}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
         </div>
+
+        <div className="flex flex-col space-y-2">
+          <label className="text-sm font-medium text-gray-700">Author Name</label>
+          <Input
+            value={formData.author}
+            onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
+            placeholder="Enter your name"
+            className="w-full"
+          />
+        </div>
+
+        <div className="flex flex-col space-y-2">
+          <label className="text-sm font-medium text-gray-700">Subject Name</label>
+          <Input
+            value={formData.subject}
+            onChange={(e) => setFormData(prev => ({ ...prev, subject: e.target.value }))}
+            placeholder="Enter the name of the person you're writing about"
+            className="w-full"
+          />
+        </div>
+
+        <div className="flex flex-col space-y-2">
+          <label className="text-sm font-medium text-gray-700">Journal Entry</label>
+          <Textarea
+            value={formData.content}
+            onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+            placeholder="Write your journal entry here..."
+            className="w-full min-h-[200px]"
+          />
+        </div>
+
+        <Button 
+          type="submit"
+          className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-lg transition-colors"
+        >
+          Generate New Journal Entry
+        </Button>
       </div>
-    </ThreadPrimitive.Empty>
+    </form>
+  );
+};
+
+export const ThreadWelcome: FC<ThreadWelcomeProps> = (props) => {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen w-full py-12 px-4">
+      <JournalEntryForm handleQuickStart={props.handleQuickStart} />
+    </div>
   );
 };

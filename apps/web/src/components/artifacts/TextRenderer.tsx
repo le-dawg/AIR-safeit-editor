@@ -9,7 +9,6 @@ import {
 import { BlockNoteView } from "@blocknote/shadcn";
 import "@blocknote/shadcn/style.css";
 import { isArtifactMarkdownContent } from "@opencanvas/shared/utils/artifacts";
-import { CopyText } from "./components/CopyText";
 import { getArtifactContent } from "@opencanvas/shared/utils/artifacts";
 import { useGraphContext } from "@/contexts/GraphContext";
 import React from "react";
@@ -18,11 +17,12 @@ import { Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
 import { Textarea } from "../ui/textarea";
 import { cn } from "@/lib/utils";
+import { EnhancedCopyText } from "./components/EnhancedCopyText";
 
 const cleanText = (text: string) => {
   return text.replaceAll("\\\n", "\n");
 };
-
+// Keeping this in, but raw text will not be needed.
 function ViewRawText({
   isRawView,
   setIsRawView,
@@ -248,10 +248,10 @@ export function TextRendererComponent(props: TextRendererProps) {
 
   return (
     <div className="w-full h-full mt-2 flex flex-col border-t-[1px] border-gray-200 overflow-y-auto py-5 relative">
-      {props.isHovering && artifact && (
+      {artifact && (
         <div className="absolute flex gap-2 top-2 right-4 z-10">
-          <CopyText currentArtifactContent={getArtifactContent(artifact)} />
-          <ViewRawText isRawView={isRawView} setIsRawView={setIsRawView} />
+          <EnhancedCopyText currentArtifactContent={getArtifactContent(artifact)} />
+          {/* <ViewRawText isRawView={isRawView} setIsRawView={setIsRawView} /> */}
         </div>
       )}
       {isRawView ? (
@@ -261,49 +261,47 @@ export function TextRendererComponent(props: TextRendererProps) {
           onChange={onChangeRawMarkdown}
         />
       ) : (
-        <>
-          <style jsx global>{`
-            .pulse-text .bn-block-group {
-              animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        <BlockNoteView
+          theme="light"
+          formattingToolbar={false}
+          slashMenu={false}
+          onCompositionStartCapture={() => (isComposition.current = true)}
+          onCompositionEndCapture={() => (isComposition.current = false)}
+          onChange={onChange}
+          editable={
+            !isStreaming || props.isEditing || !manuallyUpdatingArtifact
+          }
+          editor={editor}
+          className={cn(
+            isStreaming && !firstTokenReceived ? "pulse-text" : "",
+            "custom-blocknote-theme"
+          )}
+        >
+          <SuggestionMenuController
+            getItems={async () =>
+              getDefaultReactSlashMenuItems(editor).filter(
+                (z) => z.group !== "Media"
+              )
             }
-
-            @keyframes pulse {
-              0%,
-              100% {
-                opacity: 1;
-              }
-              50% {
-                opacity: 0.3;
-              }
-            }
-          `}</style>
-          <BlockNoteView
-            theme="light"
-            formattingToolbar={false}
-            slashMenu={false}
-            onCompositionStartCapture={() => (isComposition.current = true)}
-            onCompositionEndCapture={() => (isComposition.current = false)}
-            onChange={onChange}
-            editable={
-              !isStreaming || props.isEditing || !manuallyUpdatingArtifact
-            }
-            editor={editor}
-            className={cn(
-              isStreaming && !firstTokenReceived ? "pulse-text" : "",
-              "custom-blocknote-theme"
-            )}
-          >
-            <SuggestionMenuController
-              getItems={async () =>
-                getDefaultReactSlashMenuItems(editor).filter(
-                  (z) => z.group !== "Media"
-                )
-              }
-              triggerCharacter={"/"}
-            />
-          </BlockNoteView>
-        </>
+            triggerCharacter={"/"}
+          />
+        </BlockNoteView>
       )}
+      <style jsx global>{`
+        .pulse-text .bn-block-group {
+          animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+          0%,
+          100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.3;
+          }
+        }
+      `}</style>
     </div>
   );
 }
