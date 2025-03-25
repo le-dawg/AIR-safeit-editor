@@ -281,6 +281,7 @@ export function TextRendererComponent(props: TextRendererProps) {
             theme="light"
             formattingToolbar={false}
             slashMenu={false}
+            sideMenu={false}
             onCompositionStartCapture={() => (isComposition.current = true)}
             onCompositionEndCapture={() => (isComposition.current = false)}
             onChange={onChange}
@@ -293,14 +294,14 @@ export function TextRendererComponent(props: TextRendererProps) {
               "custom-blocknote-theme"
             )}
           >
-            <SuggestionMenuController
+            {/* <SuggestionMenuController
               getItems={async () =>
                 getDefaultReactSlashMenuItems(editor).filter(
                   (z) => z.group !== "Media"
                 )
               }
               triggerCharacter={"/"}
-            />
+            /> */}
           </BlockNoteView>
         </>
       )}
