@@ -374,26 +374,31 @@ function ArtifactRendererComponent(props: ArtifactRendererProps) {
           />
         )}
       </div>
-      <CustomQuickActions
-        streamMessage={streamMessage}
-        assistantId={selectedAssistant?.assistant_id}
-        user={user}
-        isTextSelected={isSelectionActive || selectedBlocks !== undefined}
-      />
       {currentArtifactContent.type === "text" ? (
-        <ActionsToolbar
-          streamMessage={streamMessage}
-          isTextSelected={isSelectionActive || selectedBlocks !== undefined}
-        />
+      // <CustomQuickActions
+      //   streamMessage={streamMessage}
+      //   assistantId={selectedAssistant?.assistant_id}
+      //   user={user}
+      //   isTextSelected={isSelectionActive || selectedBlocks !== undefined}
+      // />
+      null
+      ) : null}
+      {currentArtifactContent.type === "text" ? (
+        // <ActionsToolbar
+        //   streamMessage={streamMessage}
+        //   isTextSelected={isSelectionActive || selectedBlocks !== undefined}
+        // />
+        null
       ) : null}
       {currentArtifactContent.type === "code" ? (
-        <CodeToolBar
-          streamMessage={streamMessage}
-          isTextSelected={isSelectionActive || selectedBlocks !== undefined}
-          language={
-            currentArtifactContent.language as ProgrammingLanguageOptions
-          }
-        />
+        // <CodeToolBar
+        //   streamMessage={streamMessage}
+        //   isTextSelected={isSelectionActive || selectedBlocks !== undefined}
+        //   language={
+        //     currentArtifactContent.language as ProgrammingLanguageOptions
+        //   }
+        // />
+        null
       ) : null}
     </div>
   );

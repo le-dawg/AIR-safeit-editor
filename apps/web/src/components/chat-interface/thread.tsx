@@ -109,17 +109,6 @@ export const Thread: FC<ThreadProps> = (props: ThreadProps) => {
           <Home className="w-5 h-5" />
           <TighterText className="text-xl">Safe-IT Journal Helper</TighterText>
         </button>
-        {!hasChatStarted && (
-          <div className="flex items-center gap-2">
-            <TooltipIconButton
-              tooltip="New session"
-              variant="outline"
-              onClick={handleNewSession}
-            >
-              <SquarePen />
-            </TooltipIconButton>
-          </div>
-        )}
       </div>
       <ThreadPrimitive.Viewport className="flex-1 overflow-y-auto scroll-smooth bg-inherit px-4 pt-8">
         {!hasChatStarted && (

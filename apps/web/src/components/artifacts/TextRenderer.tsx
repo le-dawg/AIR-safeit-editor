@@ -251,7 +251,7 @@ export function TextRendererComponent(props: TextRendererProps) {
       {props.isHovering && artifact && (
         <div className="absolute flex gap-2 top-2 right-4 z-10">
           <CopyText currentArtifactContent={getArtifactContent(artifact)} />
-          <ViewRawText isRawView={isRawView} setIsRawView={setIsRawView} />
+          {/* <ViewRawText isRawView={isRawView} setIsRawView={setIsRawView} /> */}
         </div>
       )}
       {isRawView ? (
