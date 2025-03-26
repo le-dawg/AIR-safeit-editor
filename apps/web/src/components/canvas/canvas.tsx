@@ -137,7 +137,7 @@ export function CanvasComponent() {
               chatCollapsed={chatCollapsed}
               setChatCollapsed={(c) => {
                 setChatCollapsed(c);
-                const queryParams = new URLSearchParams(searchParams.toString());
+                const queryParams = new URLSearchParams(searchParams.toString()); 
                 queryParams.set(CHAT_COLLAPSED_QUERY_PARAM, JSON.stringify(c));
                 router.replace(`?${queryParams.toString()}`, { scroll: false });
               }}
