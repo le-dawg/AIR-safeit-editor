@@ -18,7 +18,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { JOURNAL_SYSTEM_PROMPT, formatPromptWithVars } from "../../config/journal-prompts";
 import { TooltipIconButton } from "@/components/ui/assistant-ui/tooltip-icon-button";
-import { PanelRightClose } from "lucide-react";
+import { PanelLeftOpen } from "lucide-react";
 
 // const QUICK_START_PROMPTS_SEARCH = [
 //   "",
@@ -132,30 +132,39 @@ interface JournalFormData {
 export const ThreadWelcome: FC<ThreadWelcomeProps> = (
   props: ThreadWelcomeProps
 ) => {
+  const [isSessionActive, setIsSessionActive] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSessionActive(true);
+    // Rest of your form submission logic
+  };
+
   return (
     <>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-4">
-          <img
-            src="/safe-it-logo.png"
-            alt="Logo"
-            style={{ width: '140px', height: '50px' }}
-          />
-          <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold">JournalHelper</h1>
-            <TooltipIconButton
-              tooltip="Close Chat"
-              variant="ghost"
-              className="w-8 h-8 text-gray-600 hover:text-gray-900"
-              delayDuration={400}
-              onClick={() => props.handleQuickStart(false)}
-            >
-              <PanelRightClose className="w-4 h-4" />
-            </TooltipIconButton>
-          </div>
-        </div>
+      <div className="text-center mb-4">
+        <img
+          src="/safe-it-logo.png"
+          alt="Logo"
+          style={{ width: '140px', height: '50px', margin: '0 auto' }}
+        />
+        <h1 className="text-2xl font-bold mt-4">JournalHelper</h1>
+        {isSessionActive && (
+          <TooltipIconButton
+            tooltip="Close Chat"
+            variant="ghost"
+            className="w-8 h-8 text-gray-600 hover:text-gray-900 mx-auto block"
+            delayDuration={400}
+            onClick={() => {
+              setIsSessionActive(false);
+              props.handleQuickStart(false);
+            }}
+          >
+            <PanelLeftOpen className="w-4 h-4" />
+          </TooltipIconButton>
+        )}
       </div>
-      <div className="form-container turquoise-bg rounded-lg">
+      <div className="form-container bg-[rgba(20,110,98,0.29)] rounded-lg">
         <div className="flex items-center justify-center mt-16 w-full">
           <div className="text-center max-w-3xl w-full">
             <Avatar className="mx-auto">
@@ -166,7 +175,7 @@ export const ThreadWelcome: FC<ThreadWelcomeProps> = (
               Velkommen til din personlige hjælper
             </TighterText>
             <div className="mt-8 w-full">
-              <JournalEntryForm handleQuickStart={props.handleQuickStart} />
+              <JournalEntryForm handleQuickStart={props.handleQuickStart} handleSubmit={handleSubmit} />
             </div>
           </div>
         </div>
@@ -177,8 +186,10 @@ export const ThreadWelcome: FC<ThreadWelcomeProps> = (
 
 const JournalEntryForm = ({
   handleQuickStart,
+  handleSubmit,
 }: {
   handleQuickStart: ThreadWelcomeProps["handleQuickStart"];
+  handleSubmit: (e: React.FormEvent) => void;
 }) => {
   const [date, setDate] = useState<Date>(new Date());
   const [formData, setFormData] = useState<JournalFormData>({
@@ -190,9 +201,8 @@ const JournalEntryForm = ({
 
   const threadRuntime = useThreadRuntime();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    await handleSubmit(e);
     handleQuickStart("text");
 
     const prompt = formatPromptWithVars(JOURNAL_SYSTEM_PROMPT, {
@@ -214,8 +224,8 @@ const JournalEntryForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
-      <div className="bg-white p-2 rounded">
+    <form onSubmit={handleFormSubmit} className="flex flex-col w-full">
+      <div className="bg-white p-2 rounded mb-2">
         <label htmlFor="date" className="block text-left">Dato og klokkeslæt:</label>
         <Input
           type="date"
@@ -226,7 +236,7 @@ const JournalEntryForm = ({
         />
       </div>
 
-      <div className="bg-white p-2 rounded">
+      <div className="bg-white p-2 rounded mb-2 mt-2">
         <label htmlFor="author" className="block text-left">Forfatter:</label>
         <Input
           type="text"
@@ -240,7 +250,7 @@ const JournalEntryForm = ({
         />
       </div>
 
-      <div className="bg-white p-2 rounded">
+      <div className="bg-white p-2 rounded mb-2 mt-2">
         <label htmlFor="subject" className="block text-left">Borgernavn:</label>
         <Input
           type="text"
@@ -254,7 +264,7 @@ const JournalEntryForm = ({
         />
       </div>
 
-      <div className="bg-white p-2 rounded">
+      <div className="bg-white p-2 rounded mb-4 mt-2">
         <label htmlFor="content" className="block text-left">Journalen:</label>
         <div className="relative">
           <Textarea
@@ -271,7 +281,7 @@ const JournalEntryForm = ({
 
       <Button
         type="submit"
-        className="bg-orange-700 text-white font-bold rounded-lg px-5 py-3 hover:bg-yellow-300 hover:text-black transition-colors ease-in rounded-2xl flex items-center justify-center gap-2 w-full"
+        className="bg-orange-700 text-white font-bold rounded-lg px-5 py-3 mb-4 hover:bg-yellow-300 hover:text-black transition-colors ease-in rounded-2xl flex items-center justify-center gap-2 w-full"
       >
         Gennemgå Journalnotat
       </Button>
