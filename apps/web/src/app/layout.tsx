@@ -24,25 +24,27 @@ export default function RootLayout({
     const keysPressed: string[] = [];
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      keysPressed.push(e.key.toLowerCase());
+      if (e.key && typeof e.key === 'string') {
+        keysPressed.push(e.key.toLowerCase());
 
-      if (
-        keysPressed.includes("s") &&
-        keysPressed.includes("h") &&
-        keysPressed.includes("i") &&
-        keysPressed.includes("t") &&
-        document.activeElement?.id !== "canvas-panel"
-      ) {
-        e.preventDefault();
-        // Dispatch a custom event to toggle chatCollapsed
-        window.dispatchEvent(new CustomEvent('toggleChat'));
-        // Clear the keysPressed array
-        keysPressed.length = 0;
+        if (
+          keysPressed.includes("s") &&
+          keysPressed.includes("h") &&
+          keysPressed.includes("i") &&
+          keysPressed.includes("t") &&
+          document.activeElement?.id !== "canvas-panel"
+        ) {
+          e.preventDefault();
+          // Dispatch a custom event to toggle chatCollapsed
+          window.dispatchEvent(new CustomEvent('toggleChat'));
+          // Clear the keysPressed array
+          keysPressed.length = 0;
+        }
       }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      const index = keysPressed.indexOf(e.key.toLowerCase());
+      const index = keysPressed.indexOf(e.key?.toLowerCase());
       if (index > -1) {
         keysPressed.splice(index, 1);
       }

@@ -34,9 +34,9 @@ export function CanvasComponent() {
   const { setArtifact, chatStarted, setChatStarted } = graphData;
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
-  const [chatCollapsed, setChatCollapsed] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [chatCollapsed, setChatCollapsed] = useState(true); // Set initial state to true to keep chat panel closed
   const [keysPressed, setKeysPressed] = useState<string[]>([]);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -57,32 +57,36 @@ export function CanvasComponent() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      setKeysPressed((prevKeys) => [...prevKeys, e.key.toLowerCase()]);
+      if (e.key && typeof e.key === 'string') {
+        setKeysPressed((prevKeys) => [...prevKeys, e.key.toLowerCase()]);
 
-      if (
-        keysPressed.includes("s") &&
-        keysPressed.includes("h") &&
-        keysPressed.includes("i") &&
-        keysPressed.includes("t") &&
-        document.activeElement?.id !== "canvas-panel" // Check if canvas is focused
-      ) {
-        e.preventDefault();
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-          setTimeoutId(null);
-          setKeysPressed([]);
-          return;
+        if (
+          keysPressed.includes("s") &&
+          keysPressed.includes("h") &&
+          keysPressed.includes("i") &&
+          keysPressed.includes("t") &&
+          document.activeElement?.id !== "canvas-panel" // Check if canvas is focused
+        ) {
+          e.preventDefault();
+          if (timeoutId) {
+            clearTimeout(timeoutId);
+            setTimeoutId(null);
+            setKeysPressed([]);
+            return;
+          }
+          const newTimeoutId = setTimeout(() => {
+            setChatCollapsed(!chatCollapsed);
+            setKeysPressed([]);
+          }, 500);
+          setTimeoutId(newTimeoutId);
         }
-        const newTimeoutId = setTimeout(() => {
-          setChatCollapsed(!chatCollapsed);
-          setKeysPressed([]);
-        }, 500);
-        setTimeoutId(newTimeoutId);
       }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      setKeysPressed((prevKeys) => prevKeys.filter((key) => key !== e.key.toLowerCase()));
+      if (e.key && typeof e.key === 'string') {
+        setKeysPressed((prevKeys) => prevKeys.filter((key) => key !== e.key.toLowerCase()));
+      }
       if (timeoutId) {
         clearTimeout(timeoutId);
         setTimeoutId(null);
