@@ -35,10 +35,13 @@ export function CanvasComponent() {
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [chatCollapsed, setChatCollapsed] = useState(false);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [keysPressed, setKeysPressed] = useState<string[]>([]);
 
   const searchParams = useSearchParams();
   const router = useRouter();
   const chatCollapsedSearchParam = searchParams.get(CHAT_COLLAPSED_QUERY_PARAM);
+  
   useEffect(() => {
     try {
       if (chatCollapsedSearchParam) {
@@ -51,6 +54,64 @@ export function CanvasComponent() {
       router.replace(`?${queryParams.toString()}`, { scroll: false });
     }
   }, [chatCollapsedSearchParam]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      setKeysPressed((prevKeys) => [...prevKeys, e.key.toLowerCase()]);
+
+      if (
+        keysPressed.includes("s") &&
+        keysPressed.includes("h") &&
+        keysPressed.includes("i") &&
+        keysPressed.includes("t") &&
+        document.activeElement?.id !== "canvas-panel" // Check if canvas is focused
+      ) {
+        e.preventDefault();
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+          setTimeoutId(null);
+          setKeysPressed([]);
+          return;
+        }
+        const newTimeoutId = setTimeout(() => {
+          setChatCollapsed(!chatCollapsed);
+          setKeysPressed([]);
+        }, 500);
+        setTimeoutId(newTimeoutId);
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      setKeysPressed((prevKeys) => prevKeys.filter((key) => key !== e.key.toLowerCase()));
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        setTimeoutId(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [chatCollapsed, keysPressed, timeoutId]);
+
+  useEffect(() => {
+    const handleToggleChat = () => {
+      setChatCollapsed((prevChatCollapsed) => !prevChatCollapsed);
+    };
+
+    window.addEventListener('toggleChat', handleToggleChat);
+
+    return () => {
+      window.removeEventListener('toggleChat', handleToggleChat);
+    };
+  }, [chatCollapsed]);
 
   const handleQuickStart = (
     type: "text" | "code",

@@ -3,7 +3,7 @@ import { ArtifactTitle } from "./artifact-title";
 import { NavigateArtifactHistory } from "./navigate-artifact-history";
 import { ArtifactCodeV3, ArtifactMarkdownV3 } from "@opencanvas/shared/types";
 import { Assistant } from "@langchain/langgraph-sdk";
-import { PanelRightClose } from "lucide-react";
+import { PanelRightClose, PanelLeftClose } from "lucide-react";
 import { TooltipIconButton } from "@/components/ui/assistant-ui/tooltip-icon-button";
 
 interface ArtifactHeaderProps {
@@ -23,7 +23,7 @@ export function ArtifactHeader(props: ArtifactHeaderProps) {
   return (
     <div className="flex flex-row items-center justify-between">
       <div className="flex flex-row items-center justify-center gap-2">
-        {!props.chatCollapsed && (
+        {(!props.chatCollapsed) && (
           <TooltipIconButton
             tooltip="Close Chat"
             variant="ghost"
@@ -34,7 +34,7 @@ export function ArtifactHeader(props: ArtifactHeaderProps) {
             <PanelRightClose className="text-gray-600" />
           </TooltipIconButton>
         )}
-        {props.chatCollapsed && (
+        {(props.chatCollapsed) && (
           <TooltipIconButton
             tooltip="Expand Chat"
             variant="ghost"
@@ -42,7 +42,7 @@ export function ArtifactHeader(props: ArtifactHeaderProps) {
             delayDuration={400}
             onClick={() => props.setChatCollapsed(false)}
           >
-            <PanelRightClose className="text-gray-600" />
+            <PanelLeftClose className="text-gray-600" />
           </TooltipIconButton>
         )}
         <ArtifactTitle
