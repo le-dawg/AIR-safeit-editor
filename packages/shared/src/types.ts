@@ -91,8 +91,9 @@ export type ProgrammingLanguageOptions =
   | "csharp"
   | "other";
 
-export type CodeHighlight {
-  startCharIndex: number;
+export type CodeHighlight =
+{
+rtCharIndex: number;
   endCharIndex: number;
 }
 

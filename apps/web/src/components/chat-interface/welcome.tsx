@@ -17,6 +17,8 @@ import { CalendarIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { JOURNAL_SYSTEM_PROMPT, formatPromptWithVars } from "../../config/journal-prompts";
+import { TooltipIconButton } from "@/components/ui/assistant-ui/tooltip-icon-button";
+import { PanelRightClose } from "lucide-react";
 
 // const QUICK_START_PROMPTS_SEARCH = [
 //   "",
@@ -131,22 +133,45 @@ export const ThreadWelcome: FC<ThreadWelcomeProps> = (
   props: ThreadWelcomeProps
 ) => {
   return (
-    <ThreadPrimitive.Empty>
-      <div className="flex items-center justify-center mt-16 w-full">
-        <div className="text-center max-w-3xl w-full">
-          <Avatar className="mx-auto">
-            <AvatarImage src="/safe-it-logo.png" alt="Safe-IT Logo" className="object-cover cropped-bg" />
-            <AvatarFallback>SI</AvatarFallback>
-          </Avatar>
-          <TighterText className="mt-4 text-lg font-medium">
-            What would you like to write today?
-          </TighterText>
-          <div className="mt-8 w-full">
-            <JournalEntryForm handleQuickStart={props.handleQuickStart} />
+    <>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-4">
+          <img
+            src="/safe-it-logo.png"
+            alt="Logo"
+            style={{ width: '140px', height: '50px' }}
+          />
+          <div className="flex items-center gap-4">
+            <h1 className="text-2xl font-bold">JournalHelper</h1>
+            <TooltipIconButton
+              tooltip="Close Chat"
+              variant="ghost"
+              className="w-8 h-8 text-gray-600 hover:text-gray-900"
+              delayDuration={400}
+              onClick={() => props.handleQuickStart(false)}
+            >
+              <PanelRightClose className="w-4 h-4" />
+            </TooltipIconButton>
           </div>
         </div>
       </div>
-    </ThreadPrimitive.Empty>
+      <div className="form-container turquoise-bg rounded-lg">
+        <div className="flex items-center justify-center mt-16 w-full">
+          <div className="text-center max-w-3xl w-full">
+            <Avatar className="mx-auto">
+              <AvatarImage src="/safe-it-logo.png" alt="Safe-IT Logo" className="object-cover cropped-bg" />
+              <AvatarFallback>SI</AvatarFallback>
+            </Avatar>
+            <TighterText className="mt-4 text-lg font-medium">
+              Velkommen til din personlige hjælper
+            </TighterText>
+            <div className="mt-8 w-full">
+              <JournalEntryForm handleQuickStart={props.handleQuickStart} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
@@ -163,17 +188,13 @@ const JournalEntryForm = ({
     content: "",
   });
 
-  // Get thread runtime to append messages.
   const threadRuntime = useThreadRuntime();
 
-  // Handle form submission.
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Navigate to the canvas view.
     handleQuickStart("text");
 
-    // Format the prompt using the journal system prompt and current form data.
     const prompt = formatPromptWithVars(JOURNAL_SYSTEM_PROMPT, {
       content: formData.content,
       date: format(date, "PPP"),
@@ -181,13 +202,11 @@ const JournalEntryForm = ({
       subject: formData.subject,
     });
 
-    // Append a system message with the formatted prompt.
     await threadRuntime.append({
       role: "system",
       content: [{ type: "text", text: prompt }],
     });
 
-    // Append the user message with the journal content.
     await threadRuntime.append({
       role: "user",
       content: [{ type: "text", text: formData.content }],
@@ -196,47 +215,65 @@ const JournalEntryForm = ({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
-      <Input
-        type="text"
-        value={formData.author}
-        onChange={(e) =>
-          setFormData({ ...formData, author: e.target.value })
-        }
-        placeholder="Author"
-        className="w-full"
-      />
-      <Input
-        type="text"
-        value={formData.subject}
-        onChange={(e) =>
-          setFormData({ ...formData, subject: e.target.value })
-        }
-        placeholder="Subject"
-        className="w-full"
-      />
-      <Textarea
-        value={formData.content}
-        onChange={(e) =>
-          setFormData({ ...formData, content: e.target.value })
-        }
-        placeholder="Content"
-        className="w-full"
-      />
-      <div className="flex flex-row gap-2 items-center justify-center w-full">
-        <CalendarIcon className="text-gray-500" />
+      <div className="bg-white p-2 rounded">
+        <label htmlFor="date" className="block text-left">Dato og klokkeslæt:</label>
         <Input
           type="date"
-          value={format(date, "yyyy-MM-dd")}
+          id="date"
+          value={format(date, "dd-MM-yyyy")}
           onChange={(e) => setDate(new Date(e.target.value))}
-          className="w-full"
+          className="w-full hover:border-red-500 transition-colors"
         />
       </div>
+
+      <div className="bg-white p-2 rounded">
+        <label htmlFor="author" className="block text-left">Forfatter:</label>
+        <Input
+          type="text"
+          id="author"
+          value={formData.author}
+          onChange={(e) =>
+            setFormData({ ...formData, author: e.target.value })
+          }
+          placeholder="Forfatter"
+          className="w-full hover:border-red-500 transition-colors"
+        />
+      </div>
+
+      <div className="bg-white p-2 rounded">
+        <label htmlFor="subject" className="block text-left">Borgernavn:</label>
+        <Input
+          type="text"
+          id="subject"
+          value={formData.subject}
+          onChange={(e) =>
+            setFormData({ ...formData, subject: e.target.value })
+          }
+          placeholder="Borgernavn"
+          className="w-full hover:border-red-500 transition-colors"
+        />
+      </div>
+
+      <div className="bg-white p-2 rounded">
+        <label htmlFor="content" className="block text-left">Journalen:</label>
+        <div className="relative">
+          <Textarea
+            id="content"
+            value={formData.content}
+            onChange={(e) =>
+              setFormData({ ...formData, content: e.target.value })
+            }
+            placeholder="Journalen"
+            className="w-full min-h-[200px] h-[200px] max-h-[400px] overflow-y-auto resize-y hover:border-red-500 transition-colors"
+          />
+        </div>
+      </div>
+
       <Button
         type="submit"
-        variant="outline"
-        className="text-gray-500 hover:text-gray-700 transition-colors ease-in rounded-2xl flex items-center justify-center gap-2 w-full"
+        className="bg-orange-700 text-white font-bold rounded-lg px-5 py-3 hover:bg-yellow-300 hover:text-black transition-colors ease-in rounded-2xl flex items-center justify-center gap-2 w-full"
       >
-        Start Writing
+        Gennemgå Journalnotat
       </Button>
     </form>
   );
