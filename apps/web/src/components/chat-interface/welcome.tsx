@@ -157,14 +157,14 @@ export const ThreadWelcome: FC<ThreadWelcomeProps> = (
             delayDuration={400}
             onClick={() => {
               setIsSessionActive(false);
-              props.handleQuickStart(false);
+              props.handleQuickStart("text");
             }}
           >
             <PanelLeftOpen className="w-4 h-4" />
           </TooltipIconButton>
         )}
       </div>
-      <div className="form-container bg-[rgba(20,110,98,0.29)] rounded-lg w-[80%] mx-auto">
+      <div className="form-container bg-[rgba(20,110,98,0.29)] rounded-lg sm:w-[80%] md:w-[80%] lg:w-[60%] xl:w-[40%] 2xl:w-[40%] mx-auto">
         <div className="flex items-center justify-center mt-16 w-full">
           <div className="text-center max-w-xl w-full">
             <Avatar className="mx-auto">
@@ -225,7 +225,7 @@ const JournalEntryForm = ({
 
   return (
     <form onSubmit={handleFormSubmit} className="flex flex-col w-full">
-      <div className="bg-white p-2 rounded mb-2">
+      <div className="bg-white p-2 rounded m-2">
         <label htmlFor="date" className="block text-left">Dato og klokkeslæt:</label>
         <Input
           type="date"
@@ -236,7 +236,7 @@ const JournalEntryForm = ({
         />
       </div>
 
-      <div className="bg-white p-2 rounded mb-2 mt-2">
+      <div className="bg-white p-2 rounded m-2">
         <label htmlFor="author" className="block text-left">Forfatter:</label>
         <Input
           type="text"
@@ -250,7 +250,7 @@ const JournalEntryForm = ({
         />
       </div>
 
-      <div className="bg-white p-2 rounded mb-2 mt-2">
+      <div className="bg-white p-2 rounded m-2">
         <label htmlFor="subject" className="block text-left">Borgernavn:</label>
         <Input
           type="text"
@@ -264,7 +264,7 @@ const JournalEntryForm = ({
         />
       </div>
 
-      <div className="bg-white p-2 rounded mb-4 mt-2">
+      <div className="bg-white p-2 rounded m-2">
         <label htmlFor="content" className="block text-left">Journalen:</label>
         <div className="relative">
           <Textarea
@@ -281,7 +281,7 @@ const JournalEntryForm = ({
 
       <Button
         type="submit"
-        className="bg-orange-700 text-white font-bold rounded-lg px-5 py-3 mb-4 hover:bg-yellow-300 hover:text-black transition-colors ease-in rounded-2xl flex items-center justify-center gap-2 w-full"
+        className="bg-orange-700 text-white font-bold rounded-lg px-5 py-3 mb-4 hover:bg-yellow-300 hover:text-black transition-colors ease-in rounded-2xl flex items-center justify-center gap-2 w-[95%] mx-auto"
       >
         Gennemgå Journalnotat
       </Button>
