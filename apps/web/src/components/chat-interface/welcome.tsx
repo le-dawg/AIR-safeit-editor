@@ -164,14 +164,14 @@ export const ThreadWelcome: FC<ThreadWelcomeProps> = (
           </TooltipIconButton>
         )}
       </div>
-      <div className="form-container bg-[rgba(20,110,98,0.29)] rounded-lg">
+      <div className="form-container bg-[rgba(20,110,98,0.29)] rounded-lg w-[80%] mx-auto">
         <div className="flex items-center justify-center mt-16 w-full">
-          <div className="text-center max-w-3xl w-full">
+          <div className="text-center max-w-xl w-full">
             <Avatar className="mx-auto">
               <AvatarImage src="/safe-it-logo.png" alt="Safe-IT Logo" className="object-cover cropped-bg" />
               <AvatarFallback>SI</AvatarFallback>
             </Avatar>
-            <TighterText className="mt-4 text-lg font-medium">
+            <TighterText className="text-lg font-medium">
               Velkommen til din personlige hjælper
             </TighterText>
             <div className="mt-8 w-full">
