@@ -16,7 +16,7 @@ services:
     startCommand: yarn start # Command to run the production build (expects "start": "next start" in apps/web/package.json)
     envVars:
       # Inherit all common secrets from the group defined below (and in Render UI)
-      - fromGroup: opencanvas-secrets-staging
+      - fromGroup: opencanvas-secrets
       # Set standard Node environment variable for production builds/optimizations
       - key: NODE_ENV
         value: production
@@ -44,7 +44,7 @@ services:
     startCommand: npx @langchain/langgraph-cli dev --host 0.0.0.0 --port $PORT --config ../../langgraph.json
     envVars:
       # Inherit all common secrets from the group
-      - fromGroup: opencanvas-secrets-staging
+      - fromGroup: opencanvas-secrets
       # Set standard Node environment variable
       - key: NODE_ENV
         value: production
