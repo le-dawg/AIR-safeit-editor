@@ -40,7 +40,7 @@ services:
       yarn turbo run build --filter=agents
     # Use the LangGraph CLI's production serve command, pointing to the root config.
     # Render injects the PORT env var automatically.
-    startCommand: npx @langchain/langgraph-cli serve --config ../../langgraph.json --port $PORT
+    startCommand: npx @langchain/langgraph-cli dev --config ../../langgraph.json --port $PORT
     envVars:
       # Inherit all common secrets from the group
       - fromGroup: opencanvas-secrets
