@@ -16,7 +16,6 @@ import {
   getModelFromConfig,
 } from "../../utils.js";
 import {
-  ADD_EMOJIS_TO_ARTIFACT_PROMPT,
   CHANGE_ARTIFACT_LANGUAGE_PROMPT,
   CHANGE_ARTIFACT_LENGTH_PROMPT,
 } from "../prompts.js";
@@ -81,13 +80,10 @@ export const rewriteArtifactTheme = async (
       "{newLength}",
       newLength
     ).replace("{artifactContent}", currentArtifactContent.fullMarkdown);
-  } else if (state.regenerateWithEmojis) {
-    formattedPrompt = ADD_EMOJIS_TO_ARTIFACT_PROMPT.replace(
-      "{artifactContent}",
-      currentArtifactContent.fullMarkdown
-    );
   } else {
-    throw new Error("No theme selected");
+    // It should not be possible to reach here now without language or artifactLength
+    // If other themes are added, this logic needs update.
+    throw new Error("No valid theme modification selected");
   }
 
   formattedPrompt = formattedPrompt.replace("{reflections}", memoriesAsString);
