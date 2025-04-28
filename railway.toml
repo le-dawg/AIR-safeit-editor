@@ -28,10 +28,7 @@ NEXT_PUBLIC_GROQ_ENABLED = "false"
 NEXT_PUBLIC_SUPABASE_URL = "https://byeoqfrjhsnrdwfmegem.supabase.co"
 NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW9xZnJqaHNucmR3Zm1lZ2VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2OTEwOTMsImV4cCI6MjA1ODI2NzA5M30.OxaMjTNPfpYcE9CUFg4ljPxkK0XO64RORy6GUXHVbtU"
 NEXT_PUBLIC_SUPABASE_URL_DOCUMENTS = "https://byeoqfrjhsnrdwfmegem.supabase.co"
-NEXT_PUBLIC_SUPABASE_ANON_KEY_DOCUMENTS = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW9xZnJqaHNucmR3Zm1lZ2VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2OTEwOTMsImV4cCI6MjA1ODI2NzA5M30.OxaMjTNPfpYcE9CUFg4ljPxkK0XO64RORy6GUXHVbtU"[services.langgraphserver]
-name = "LangGraphServer"
-build.command = "cd apps/agents && yarn install && yarn build"
-start.command = "cd apps/agents && npx @langchain/langgraph-cli dev --port 54367 --config ../../langgraph.json"
+NEXT_PUBLIC_SUPABASE_ANON_KEY_DOCUMENTS = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW9xZnJqaHNucmR3Zm1lZ2VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2OTEwOTMsImV4cCI6MjA1ODI2NzA5M30.OxaMjTNPfpYcE9CUFg4ljPxkK0XO64RORy6GUXHVbtU"
 
 [services.langgraphserver.env]
 LANGCHAIN_TRACING_V2 = "true"
