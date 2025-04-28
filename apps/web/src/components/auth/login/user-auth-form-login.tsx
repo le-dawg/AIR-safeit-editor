@@ -104,7 +104,7 @@ export function UserAuthForm({
           </span>
         </div>
       </div>
-      <Button
+      {/* <Button
         onClick={async () => {
           setGoogleIsLoading(true);
           await onLoginWithOauth("google");
@@ -120,7 +120,7 @@ export function UserAuthForm({
           <Icons.google className="mr-2 h-4 w-4" />
         )}{" "}
         Google
-      </Button>
+      </Button> */}
       <Button
         onClick={async () => {
           setGithubIsLoading(true);

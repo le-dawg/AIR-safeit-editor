@@ -137,7 +137,7 @@ export const ThreadWelcome: FC<ThreadWelcomeProps> = (
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSessionActive(true);
-    // Rest of your form submission logic
+    // Rest of form submission logic
   };
 
   return (
