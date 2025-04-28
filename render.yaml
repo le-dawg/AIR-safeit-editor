@@ -5,7 +5,7 @@ services:
   - type: web # Render service type: 'web' for HTTP services
     name: web # Name for the service (used for internal DNS: web.onrender.com)
     env: node # Environment runtime
-    plan: standard # Choose a plan based on expected traffic/resource needs (can be changed later)
+    plan: starter # Choose a plan based on expected traffic/resource needs (can be changed later)
     rootDir: apps/web # Directory containing this service's code, relative to repo root
     buildCommand: |
       echo "Building web frontend (apps/web)..."
@@ -29,7 +29,7 @@ services:
   - type: web # Use 'web' so it gets an internal DNS name ('agents') and can receive HTTP requests
     name: agents # Name for this service (internal DNS: agents.onrender.com)
     env: node # Environment runtime
-    plan: standard # Choose plan based on expected agent workload
+    plan: starter # Choose plan based on expected agent workload
     rootDir: apps/agents # Directory containing this service's code
     buildCommand: |
       echo "Building agents backend (apps/agents)..."
