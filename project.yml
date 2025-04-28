@@ -1,0 +1,13 @@
+functions:
+  - name: shared
+    runtime: nodejs:18           # <— supported runtime
+    source_dir: shared/src
+  - name: evals
+    runtime: nodejs:18
+    source_dir: evals/src
+
+ignore:
+  - "**/*.prettierrc"
+  - "**/*.eslintrc.*"
+  - "**/*.tsconfig*"
+  - "**/turbo"
