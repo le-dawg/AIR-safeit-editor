@@ -19,8 +19,6 @@ import {
   ADD_EMOJIS_TO_ARTIFACT_PROMPT,
   CHANGE_ARTIFACT_LANGUAGE_PROMPT,
   CHANGE_ARTIFACT_LENGTH_PROMPT,
-  CHANGE_ARTIFACT_READING_LEVEL_PROMPT,
-  CHANGE_ARTIFACT_TO_PIRATE_PROMPT,
 } from "../prompts.js";
 import {
   OpenCanvasGraphAnnotation,
@@ -63,31 +61,6 @@ export const rewriteArtifactTheme = async (
       "{newLanguage}",
       state.language
     ).replace("{artifactContent}", currentArtifactContent.fullMarkdown);
-  } else if (state.readingLevel && state.readingLevel !== "pirate") {
-    let newReadingLevel = "";
-    switch (state.readingLevel) {
-      case "child":
-        newReadingLevel = "elementary school student";
-        break;
-      case "teenager":
-        newReadingLevel = "high school student";
-        break;
-      case "college":
-        newReadingLevel = "college student";
-        break;
-      case "phd":
-        newReadingLevel = "PhD student";
-        break;
-    }
-    formattedPrompt = CHANGE_ARTIFACT_READING_LEVEL_PROMPT.replace(
-      "{newReadingLevel}",
-      newReadingLevel
-    ).replace("{artifactContent}", currentArtifactContent.fullMarkdown);
-  } else if (state.readingLevel && state.readingLevel === "pirate") {
-    formattedPrompt = CHANGE_ARTIFACT_TO_PIRATE_PROMPT.replace(
-      "{artifactContent}",
-      currentArtifactContent.fullMarkdown
-    );
   } else if (state.artifactLength) {
     let newLength = "";
     switch (state.artifactLength) {

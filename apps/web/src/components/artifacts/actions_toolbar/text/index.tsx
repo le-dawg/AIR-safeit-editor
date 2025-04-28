@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { BookOpen, SlidersVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ReadingLevelOptions } from "./ReadingLevelOptions";
 import { LengthOptions } from "./LengthOptions";
 import { TooltipIconButton } from "@/components/ui/assistant-ui/tooltip-icon-button";
 import { MagicPencilSVG } from "@/components/icons/magic_pencil";
@@ -26,14 +25,6 @@ interface TextActionsToolbarProps {
 }
 
 const toolbarOptions: ToolbarOption[] = [
-  {
-    id: "readingLevel",
-    tooltip: "Reading level",
-    icon: <BookOpen className="w-[26px] h-[26px]" />,
-    component: (props: SharedComponentProps) => (
-      <ReadingLevelOptions {...props} />
-    ),
-  },
   {
     id: "adjustLength",
     tooltip: "Adjust the length",

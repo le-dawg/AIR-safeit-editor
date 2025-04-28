@@ -14,7 +14,6 @@ export const DEFAULT_INPUTS = {
   language: undefined,
   artifactLength: undefined,
   regenerateWithEmojis: undefined,
-  readingLevel: undefined,
   addComments: undefined,
   addLogs: undefined,
   fixBugs: undefined,

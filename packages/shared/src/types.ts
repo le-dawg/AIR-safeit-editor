@@ -93,7 +93,7 @@ export type ProgrammingLanguageOptions =
 
 export type CodeHighlight =
 {
-rtCharIndex: number;
+  startCharIndex: number;
   endCharIndex: number;
 }
 

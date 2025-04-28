@@ -3,7 +3,6 @@ import {
   ArtifactLengthOptions,
   LanguageOptions,
   ProgrammingLanguageOptions,
-  ReadingLevelOptions,
   CodeHighlight,
   ArtifactV3,
   TextHighlight,
@@ -101,10 +100,6 @@ export const OpenCanvasGraphAnnotation = Annotation.Root({
    * Whether or not to regenerate with emojis.
    */
   regenerateWithEmojis: Annotation<boolean | undefined>,
-  /**
-   * The reading level to adjust the artifact to.
-   */
-  readingLevel: Annotation<ReadingLevelOptions | undefined>,
   /**
    * Whether or not to add comments to the code artifact.
    */
