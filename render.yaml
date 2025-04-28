@@ -1,0 +1,53 @@
+# This file defines the services for deploying the Open Canvas monorepo on Render.
+
+services:
+  # 1. The Next.js Frontend (apps/web)
+  - type: web # Render service type: 'web' for HTTP services
+    name: web # Name for the service (used for internal DNS: web.onrender.com)
+    env: node # Environment runtime
+    plan: standard # Choose a plan based on expected traffic/resource needs (can be changed later)
+    rootDir: apps/web # Directory containing this service's code, relative to repo root
+    buildCommand: |
+      echo "Building web frontend (apps/web)..."
+      # Go to monorepo root, install all dependencies, then build only this app
+      cd ../.. && \
+      yarn install --immutable --frozen-lockfile && \
+      yarn turbo run build --filter=web
+    startCommand: yarn start # Command to run the production build (expects "start": "next start" in apps/web/package.json)
+    envVars:
+      # Inherit all common secrets from the group defined below (and in Render UI)
+      - fromGroup: opencanvas-secrets
+      # Set standard Node environment variable for production builds/optimizations
+      - key: NODE_ENV
+        value: production
+      # Point the frontend to the internal URL of the agents backend service
+      # Render provides http://<service-name>:<port> for internal communication
+      # Ensure the 'agents' service below listens on the PORT Render provides (e.g., 10000)
+      - key: NEXT_PUBLIC_LANGGRAPH_API_URL
+        value: http://agents:10000 # Use the 'name' of the agents service below
+
+  # 2. The LangGraph Agents Backend (apps/agents)
+  - type: web # Use 'web' so it gets an internal DNS name ('agents') and can receive HTTP requests
+    name: agents # Name for this service (internal DNS: agents.onrender.com)
+    env: node # Environment runtime
+    plan: standard # Choose plan based on expected agent workload
+    rootDir: apps/agents # Directory containing this service's code
+    buildCommand: |
+      echo "Building agents backend (apps/agents)..."
+      # Go to monorepo root, install all dependencies, then build only this app
+      cd ../.. && \\
+      yarn install --immutable --frozen-lockfile && \\
+      yarn turbo run build --filter=agents
+    # Use the LangGraph CLI's production serve command, pointing to the root config.
+    # Render injects the PORT env var automatically.
+    startCommand: npx @langchain/langgraph-cli serve --config ../../langgraph.json --port $PORT
+    envVars:
+      # Inherit all common secrets from the group
+      - fromGroup: opencanvas-secrets
+      # Set standard Node environment variable
+      - key: NODE_ENV
+        value: production
+      # Render injects the PORT environment variable. The CLI command above should use it.
+      # The value '10000' here is just a placeholder for Render's internal assignment if needed elsewhere.
+      - key: PORT
+        value: 10000
