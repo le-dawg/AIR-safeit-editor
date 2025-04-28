@@ -1,3 +1,5 @@
+console.log("DISABLE_ESLINT_PLUGIN:", process.env.DISABLE_ESLINT_PLUGIN);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {

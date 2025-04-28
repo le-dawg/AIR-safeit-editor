@@ -1,13 +1,20 @@
-functions:
-  - name: shared
-    runtime: nodejs:18           # <— supported runtime
-    source_dir: shared/src
-  - name: evals
-    runtime: nodejs:18
-    source_dir: evals/src
+parameters: {}
+environment: {}
 
-ignore:
-  - "**/*.prettierrc"
-  - "**/*.eslintrc.*"
-  - "**/*.tsconfig*"
-  - "**/turbo"
+packages:
+  - name: shared
+    functions:
+      - name: shared
+        runtime: nodejs:18
+        source_dir: shared/src
+
+  - name: evals
+    functions:
+      - name: evals
+        runtime: nodejs:18
+        source_dir: evals/src
+        ignore:
+          - "**/*.prettierrc"
+          - "**/*.eslintrc.*"
+          - "**/*.tsconfig*"
+          - "**/turbo"
