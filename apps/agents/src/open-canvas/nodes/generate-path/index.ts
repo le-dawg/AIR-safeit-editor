@@ -73,8 +73,7 @@ export async function generatePath(
   if (
     state.language ||
     state.artifactLength ||
-    state.regenerateWithEmojis ||
-    state.readingLevel
+    state.regenerateWithEmojis
   ) {
     return {
       next: "rewriteArtifactTheme",
