@@ -317,7 +317,6 @@ export function GraphProvider({ children }: { children: ReactNode }) {
       input.language,
       input.artifactLength,
       input.regenerateWithEmojis,
-      input.readingLevel,
       input.addComments,
       input.addLogs,
       input.fixBugs,
