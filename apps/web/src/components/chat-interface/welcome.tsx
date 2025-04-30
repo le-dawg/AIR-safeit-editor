@@ -230,9 +230,8 @@ const JournalEntryForm = ({
         <Input
           type="date"
           id="date"
-          value={format(date, "dd-MM-yyyy")}
+          value={format(date, "yyyy-MM-dd")} // Use the correct yyyy-MM-dd format
           onChange={(e) => setDate(new Date(e.target.value))}
-          className="w-full hover:border-red-500 transition-colors"
         />
       </div>
 
