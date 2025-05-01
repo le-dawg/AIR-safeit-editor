@@ -13,7 +13,7 @@ import { PasswordInput } from "../../ui/password-input";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   onSignupWithEmail: (input: SignupWithEmailInput) => Promise<void>;
-  onSignupWithOauth: (provider: "google" | "github") => Promise<void>;
+  onSignupWithOauth: (provider: "github") => Promise<void>;
 }
 
 export function UserAuthForm({
@@ -104,7 +104,7 @@ export function UserAuthForm({
           </span>
         </div>
       </div>
-      <Button
+      {/* <Button
         onClick={async () => {
           setGoogleIsLoading(true);
           await onSignupWithOauth("google");
@@ -120,7 +120,7 @@ export function UserAuthForm({
           <Icons.google className="mr-2 h-4 w-4" />
         )}{" "}
         Google
-      </Button>
+      </Button> */}
       <Button
         onClick={async () => {
           setGithubIsLoading(true);

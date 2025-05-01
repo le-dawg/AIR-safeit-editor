@@ -224,7 +224,7 @@ export const getModelConfig = (
       ...providerConfig,
       modelName: actualModelName,
       modelProvider: "openai",
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: "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",
     };
   }
 
