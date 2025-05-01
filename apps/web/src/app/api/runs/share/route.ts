@@ -10,9 +10,26 @@ async function shareRunWithRetry(
 ): Promise<string> {
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      return await lsClient.shareRun(runId);
+      // Add a nested try/catch to potentially log more details from the specific error
+      try {
+        return await lsClient.shareRun(runId);
+      } catch (innerError: any) {
+        console.error(`shareRun attempt ${attempt} failed internally:`, innerError);
+        // Log response details if available on the error object (structure might vary)
+        if (innerError.response) {
+          console.error(`Response status: ${innerError.response.status}`);
+          try {
+            const responseBody = await innerError.response.text(); // or .json() if applicable
+            console.error(`Response body: ${responseBody}`);
+          } catch (bodyError) {
+            console.error("Failed to read response body:", bodyError);
+          }
+        }
+        throw innerError; // Re-throw the error to be caught by the outer catch
+      }
     } catch (error) {
       if (attempt === MAX_RETRIES) {
+        // The final error thrown here will be logged by the main POST handler's catch block
         throw error;
       }
       console.warn(

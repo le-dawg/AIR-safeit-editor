@@ -5,8 +5,10 @@ import { buttonVariants } from "../../ui/button";
 import { UserAuthForm } from "./user-auth-form-login";
 import { login } from "./actions";
 import { createSupabaseClient } from "@/lib/supabase/client";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+// Remove unused imports if they are only used by the removed useEffect
+// import { useSearchParams, useRouter } from "next/navigation";
+import { useState } from "react"; // Remove useEffect import
+import { useToast } from "@/hooks/use-toast"; // Import useToast
 
 export interface LoginWithEmailInput {
   email: string;
@@ -14,29 +16,24 @@ export interface LoginWithEmailInput {
 }
 
 export function Login() {
-  const [isError, setIsError] = useState(false);
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  useEffect(() => {
-    const error = searchParams.get("error");
-    if (error === "true") {
-      setIsError(true);
-      // Remove the error parameter from the URL
-      const newSearchParams = new URLSearchParams(searchParams);
-      newSearchParams.delete("error");
-      router.replace(
-        `${window.location.pathname}?${newSearchParams.toString()}`,
-        { scroll: false }
-      );
-    }
-  }, [searchParams, router]);
+  // Remove isError state and related useEffect
+  const { toast } = useToast(); // Get toast function
 
   const onLoginWithEmail = async (
     input: LoginWithEmailInput
   ): Promise<void> => {
-    setIsError(false);
-    await login(input);
+    // setIsError(false); // Remove this
+    const result = await login(input); // Await the result
+
+    // Check if the action returned an error object
+    if (result && !result.success) {
+      toast({
+        variant: "destructive",
+        description: result.message,
+        duration: 3000, // 3 seconds
+      });
+    }
+    // No need for an else block, successful login is handled by redirect in the action
   };
 
   const onLoginWithOauth = async (
@@ -96,11 +93,7 @@ export function Login() {
             onLoginWithEmail={onLoginWithEmail}
             onLoginWithOauth={onLoginWithOauth}
           />
-          {isError && (
-            <p className="text-red-500 text-sm text-center">
-              There was an error signing into your account. Please try again.
-            </p>
-          )}
+          {/* Remove the old error message paragraph */}
         </div>
       </div>
     </div>
