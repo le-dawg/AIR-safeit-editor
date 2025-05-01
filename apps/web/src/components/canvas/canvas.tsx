@@ -34,26 +34,49 @@ export function CanvasComponent() {
   const { setArtifact, chatStarted, setChatStarted } = graphData;
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
-  const [chatCollapsed, setChatCollapsed] = useState(true); // Set initial state to true to keep chat panel closed
+  const [chatCollapsed, setChatCollapsed] = useState(true); // Default state
   const [keysPressed, setKeysPressed] = useState<string[]>([]);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [hasMounted, setHasMounted] = useState(false); // <-- Add mount state
 
   const searchParams = useSearchParams();
   const router = useRouter();
   const chatCollapsedSearchParam = searchParams.get(CHAT_COLLAPSED_QUERY_PARAM);
-  
+
+  // Effect to set mount state only on client
   useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  // Effect to sync chatCollapsed state with URL search param AFTER mounting
+  useEffect(() => {
+    if (!hasMounted) { // <-- Only run after mounting
+      return;
+    }
     try {
-      if (chatCollapsedSearchParam) {
-        setChatCollapsed(JSON.parse(chatCollapsedSearchParam));
+      // Default to true if param is missing or invalid
+      let collapsedFromParam = true;
+      if (chatCollapsedSearchParam !== null) {
+        collapsedFromParam = JSON.parse(chatCollapsedSearchParam);
+      }
+      // Only update state if it differs from the param
+      if (chatCollapsed !== collapsedFromParam) {
+        setChatCollapsed(collapsedFromParam);
       }
     } catch (e) {
-      setChatCollapsed(false);
+      // If parsing fails, default to false and clean up URL
+      if (chatCollapsed !== false) {
+        setChatCollapsed(false);
+      }
       const queryParams = new URLSearchParams(searchParams.toString());
       queryParams.delete(CHAT_COLLAPSED_QUERY_PARAM);
       router.replace(`?${queryParams.toString()}`, { scroll: false });
     }
-  }, [chatCollapsedSearchParam]);
+    // Dependencies: hasMounted ensures it runs after mount,
+    // chatCollapsedSearchParam ensures it re-runs if the URL changes.
+    // router and searchParams are included as they are used.
+    // chatCollapsed is included to prevent unnecessary updates if state already matches param.
+  }, [hasMounted, chatCollapsedSearchParam, router, searchParams, chatCollapsed]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -75,7 +98,12 @@ export function CanvasComponent() {
             return;
           }
           const newTimeoutId = setTimeout(() => {
-            setChatCollapsed(!chatCollapsed);
+            // Update URL when toggling via shortcut
+            const newCollapsedState = !chatCollapsed;
+            setChatCollapsed(newCollapsedState);
+            const queryParams = new URLSearchParams(searchParams.toString());
+            queryParams.set(CHAT_COLLAPSED_QUERY_PARAM, JSON.stringify(newCollapsedState));
+            router.replace(`?${queryParams.toString()}`, { scroll: false });
             setKeysPressed([]);
           }, 500);
           setTimeoutId(newTimeoutId);
@@ -103,11 +131,17 @@ export function CanvasComponent() {
         clearTimeout(timeoutId);
       }
     };
-  }, [chatCollapsed, keysPressed, timeoutId]);
+    // Include router and searchParams as they are used for URL update
+  }, [chatCollapsed, keysPressed, timeoutId, router, searchParams]);
 
   useEffect(() => {
     const handleToggleChat = () => {
-      setChatCollapsed((prevChatCollapsed) => !prevChatCollapsed);
+      // Update URL when toggling via event
+      const newCollapsedState = !chatCollapsed;
+      setChatCollapsed(newCollapsedState);
+      const queryParams = new URLSearchParams(searchParams.toString());
+      queryParams.set(CHAT_COLLAPSED_QUERY_PARAM, JSON.stringify(newCollapsedState));
+      router.replace(`?${queryParams.toString()}`, { scroll: false });
     };
 
     window.addEventListener('toggleChat', handleToggleChat);
@@ -115,7 +149,8 @@ export function CanvasComponent() {
     return () => {
       window.removeEventListener('toggleChat', handleToggleChat);
     };
-  }, [chatCollapsed]);
+    // Include router and searchParams as they are used for URL update
+  }, [chatCollapsed, router, searchParams]);
 
   const handleQuickStart = (
     type: "text" | "code",
@@ -160,17 +195,56 @@ export function CanvasComponent() {
     setIsEditing(true);
   };
 
+  // Helper function to update URL when chatCollapsed changes
+  const updateChatCollapsedQueryParam = (newCollapsedState: boolean) => {
+    const queryParams = new URLSearchParams(searchParams.toString());
+    queryParams.set(CHAT_COLLAPSED_QUERY_PARAM, JSON.stringify(newCollapsedState));
+    router.replace(`?${queryParams.toString()}`, { scroll: false });
+  };
+
+  // Render null until mounted to prevent hydration mismatch
+  if (!hasMounted) { // <-- Add mount check
+    return null;
+  }
+
   return (
     <ResizablePanelGroup direction="horizontal" className="h-screen">
       {!chatStarted && (
-        <NoSSRWrapper>
+        <ContentComposerChatInterface
+          chatCollapsed={chatCollapsed}
+          setChatCollapsed={(c) => {
+            setChatCollapsed(c);
+            updateChatCollapsedQueryParam(c); // <-- Use helper
+          }}
+          switchSelectedThreadCallback={(thread) => {
+            // Chat should only be "started" if there are messages present
+            if ((thread.values as Record<string, any>)?.messages?.length) {
+              setChatStarted(true);
+              setModelName(DEFAULT_MODEL_NAME);
+              setModelConfig(DEFAULT_MODEL_NAME, DEFAULT_MODEL_CONFIG);
+            } else {
+              setChatStarted(false);
+            }
+          }}
+          setChatStarted={setChatStarted}
+          hasChatStarted={chatStarted}
+          handleQuickStart={handleQuickStart}
+        />
+      )}
+      {!chatCollapsed && chatStarted && (
+        <ResizablePanel
+          defaultSize={25}
+          minSize={15}
+          maxSize={50}
+          className="transition-all duration-700 h-screen mr-auto bg-gray-50/70 shadow-inner-right"
+          id="chat-panel-main"
+          order={1}
+        >
           <ContentComposerChatInterface
             chatCollapsed={chatCollapsed}
             setChatCollapsed={(c) => {
               setChatCollapsed(c);
-              const queryParams = new URLSearchParams(searchParams.toString());
-              queryParams.set(CHAT_COLLAPSED_QUERY_PARAM, JSON.stringify(c));
-              router.replace(`?${queryParams.toString()}`, { scroll: false });
+              updateChatCollapsedQueryParam(c); // <-- Use helper
             }}
             switchSelectedThreadCallback={(thread) => {
               // Chat should only be "started" if there are messages present
@@ -186,50 +260,15 @@ export function CanvasComponent() {
             hasChatStarted={chatStarted}
             handleQuickStart={handleQuickStart}
           />
-        </NoSSRWrapper>
-      )}
-      {!chatCollapsed && chatStarted && (
-        <ResizablePanel
-          defaultSize={25}
-          minSize={15}
-          maxSize={50}
-          className="transition-all duration-700 h-screen mr-auto bg-gray-50/70 shadow-inner-right"
-          id="chat-panel-main"
-          order={1}
-        >
-          <NoSSRWrapper>
-            <ContentComposerChatInterface
-              chatCollapsed={chatCollapsed}
-              setChatCollapsed={(c) => {
-                setChatCollapsed(c);
-                const queryParams = new URLSearchParams(searchParams.toString()); 
-                queryParams.set(CHAT_COLLAPSED_QUERY_PARAM, JSON.stringify(c));
-                router.replace(`?${queryParams.toString()}`, { scroll: false });
-              }}
-              switchSelectedThreadCallback={(thread) => {
-                // Chat should only be "started" if there are messages present
-                if ((thread.values as Record<string, any>)?.messages?.length) {
-                  setChatStarted(true);
-                  setModelName(DEFAULT_MODEL_NAME);
-                  setModelConfig(DEFAULT_MODEL_NAME, DEFAULT_MODEL_CONFIG);
-                } else {
-                  setChatStarted(false);
-                }
-              }}
-              setChatStarted={setChatStarted}
-              hasChatStarted={chatStarted}
-              handleQuickStart={handleQuickStart}
-            />
-          </NoSSRWrapper>
         </ResizablePanel>
       )}
 
       {chatStarted && (
         <>
-          <ResizableHandle />
+          {!chatCollapsed && <ResizableHandle />} {/* Conditionally render handle */}
           <ResizablePanel
             defaultSize={chatCollapsed ? 100 : 75}
-            maxSize={85}
+            maxSize={chatCollapsed ? 100 : 85} // Adjust max size based on state
             minSize={50}
             id="canvas-panel"
             order={2}
@@ -240,9 +279,7 @@ export function CanvasComponent() {
                 chatCollapsed={chatCollapsed}
                 setChatCollapsed={(c) => {
                   setChatCollapsed(c);
-                  const queryParams = new URLSearchParams(searchParams.toString());
-                  queryParams.set(CHAT_COLLAPSED_QUERY_PARAM, JSON.stringify(c));
-                  router.replace(`?${queryParams.toString()}`, { scroll: false });
+                  updateChatCollapsedQueryParam(c); // <-- Use helper
                 }}
                 setIsEditing={setIsEditing}
                 isEditing={isEditing}
