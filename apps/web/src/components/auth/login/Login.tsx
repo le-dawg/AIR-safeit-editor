@@ -39,7 +39,6 @@ export function Login() {
   const onLoginWithOauth = async (
     provider: "google" | "github"
   ): Promise<void> => {
-    setIsError(false);
     const client = createSupabaseClient();
     const currentOrigin =
       typeof window !== "undefined" ? window.location.origin : "";
