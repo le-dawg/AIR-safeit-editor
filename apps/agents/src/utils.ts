@@ -221,12 +221,12 @@ export const getModelConfig = (
       actualModelName = "gpt-4o";
     }
     // Ensure the environment variable is also set, as Langchain might prioritize it.
-    process.env.OPENAI_API_KEY = "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";
+    
     return {
       ...providerConfig,
       modelName: actualModelName,
       modelProvider: "openai",
-      apiKey: "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",
+      apiKey: process.env.OPENAI_API_KEY,
     };
   }
 
