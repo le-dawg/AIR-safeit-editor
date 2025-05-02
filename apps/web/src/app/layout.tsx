@@ -29,9 +29,9 @@ export default function RootLayout({
 
         if (
           keysPressed.includes("s") &&
-          keysPressed.includes("h") &&
-          keysPressed.includes("i") &&
-          keysPressed.includes("t") &&
+          keysPressed.includes("a") &&
+          keysPressed.includes("f") &&
+          keysPressed.includes("e") &&
           document.activeElement?.id !== "canvas-panel"
         ) {
           e.preventDefault();

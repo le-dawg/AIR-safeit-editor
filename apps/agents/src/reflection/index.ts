@@ -1,4 +1,4 @@
-import { ChatAnthropic } from "@langchain/anthropic";
+import { ChatOpenAI } from "@langchain/openai";
 import {
   type LangGraphRunnableConfig,
   StateGraph,
@@ -47,11 +47,11 @@ export const reflect = async (
     }),
   };
 
-  const model = new ChatAnthropic({
-    model: "claude-3-5-sonnet-20240620",
+  const model = new ChatOpenAI({
+    model: "gpt-4o-mini", // Using the requested model
     temperature: 0,
   }).bindTools([generateReflectionTool], {
-    tool_choice: "generate_reflections",
+    tool_choice: "generate_reflections", // Force OpenAI to use the tool
   });
 
   const currentArtifactContent = state.artifact

@@ -3,8 +3,10 @@ import { ArtifactTitle } from "./artifact-title";
 import { NavigateArtifactHistory } from "./navigate-artifact-history";
 import { ArtifactCodeV3, ArtifactMarkdownV3 } from "@opencanvas/shared/types";
 import { Assistant } from "@langchain/langgraph-sdk";
-import { PanelRightClose, PanelLeftClose } from "lucide-react";
+import { PanelRightClose, PanelLeftClose, Home } from "lucide-react"; // Import Home icon
 import { TooltipIconButton } from "@/components/ui/assistant-ui/tooltip-icon-button";
+import { useGraphContext } from "@/contexts/GraphContext"; // Import Graph context
+import { useThreadContext } from "@/contexts/ThreadProvider"; // Import Thread context
 
 interface ArtifactHeaderProps {
   isBackwardsDisabled: boolean;
@@ -20,9 +22,33 @@ interface ArtifactHeaderProps {
 }
 
 export function ArtifactHeader(props: ArtifactHeaderProps) {
+  const { graphData: { clearState, setChatStarted } } = useGraphContext();
+  const { setThreadId } = useThreadContext();
+
+  const handleReturnToWelcome = () => {
+    // Clear the thread state
+    clearState();
+    // Remove the threadId from URL
+    setThreadId(null);
+    // Reset chat state
+    setChatStarted(false);
+    // Keep chat collapsed (using the passed prop)
+    props.setChatCollapsed(true);
+  };
+
   return (
     <div className="flex flex-row items-center justify-between">
-      <div className="flex flex-row items-center justify-center gap-2">
+      <div className="flex flex-row items-center justify-center gap-1"> {/* Reduced gap slightly */}
+        {/* Add the Home button here */}
+        <TooltipIconButton
+          tooltip="Return to Welcome"
+          variant="ghost"
+          className="ml-2 mb-1 w-8 h-8"
+          delayDuration={400}
+          onClick={handleReturnToWelcome}
+        >
+          <Home className="text-gray-600" />
+        </TooltipIconButton>
         {(!props.chatCollapsed) && (
           <TooltipIconButton
             tooltip="Close Chat"
@@ -34,7 +60,7 @@ export function ArtifactHeader(props: ArtifactHeaderProps) {
             <PanelRightClose className="text-gray-600" />
           </TooltipIconButton>
         )}
-        {(props.chatCollapsed) && (
+        {props.chatCollapsed && ( // Simplified condition
           <TooltipIconButton
             tooltip="Expand Chat"
             variant="ghost"

@@ -35,7 +35,7 @@ export function CopyText(props: CopyTextProps) {
         }
       }}
     >
-    Copy your draft journal!
+    Kopier dit udkast til dagbog!
     </button>
   );
 }
