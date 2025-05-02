@@ -7,6 +7,7 @@ import { PanelRightClose, PanelLeftClose, Home } from "lucide-react"; // Import 
 import { TooltipIconButton } from "@/components/ui/assistant-ui/tooltip-icon-button";
 import { useGraphContext } from "@/contexts/GraphContext"; // Import Graph context
 import { useThreadContext } from "@/contexts/ThreadProvider"; // Import Thread context
+import { TighterText } from "@/components/ui/header";
 
 interface ArtifactHeaderProps {
   isBackwardsDisabled: boolean;
@@ -43,17 +44,18 @@ export function ArtifactHeader(props: ArtifactHeaderProps) {
         <TooltipIconButton
           tooltip="Return to Welcome"
           variant="ghost"
-          className="ml-2 mb-1 w-8 h-8"
+          className="ml-2 mb-1 w-8 h-8" /* Removed hidden class */
           delayDuration={400}
           onClick={handleReturnToWelcome}
         >
           <Home className="text-gray-600" />
+          <TighterText className="text-xl"> </TighterText>
         </TooltipIconButton>
         {(!props.chatCollapsed) && (
           <TooltipIconButton
             tooltip="Close Chat"
             variant="ghost"
-            className="ml-2 mb-1 w-8 h-8"
+            className="ml-2 mb-1 w-8 h-8 hidden"
             delayDuration={400}
             onClick={() => props.setChatCollapsed(true)}
           >
@@ -64,7 +66,7 @@ export function ArtifactHeader(props: ArtifactHeaderProps) {
           <TooltipIconButton
             tooltip="Expand Chat"
             variant="ghost"
-            className="ml-2 mb-1 w-8 h-8"
+            className="ml-2 mb-1 w-8 h-8 hidden"
             delayDuration={400}
             onClick={() => props.setChatCollapsed(false)}
           >
