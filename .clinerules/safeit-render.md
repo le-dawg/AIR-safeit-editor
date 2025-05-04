@@ -1,13 +1,16 @@
-# Safe-IT Journal Helper - Render.com Deployment Guidelines
+# Safe-IT Journal Helper - important things to always always know
 
 ## Project Overview
 This is a Next.js monorepo application with two distinct services:
 - `/apps/web`: Frontend service handling user interface
 - `/apps/agents`: Backend service managing conversation flows
 
+## Misconcpetions to avoid
+- NEXT_PUBLIC_API_URL is never needed. This monorepo does not require it because the agents are just a backend that gets talked to by the frontend service
+
 ## Current Status
 - Development environment works perfectly
-- Need deployment configuration for Render.com
+- Deplolyment on render breaks sometimes due to fragile build commands
 
 ## Deployment Requirements
 
