@@ -38,13 +38,66 @@ export function ArtifactHeader(props: ArtifactHeaderProps) {
   };
 
   return (
+    // Added relative positioning context for potential absolute elements if needed later
+    <div className="relative flex flex-row items-center justify-between px-4 py-2"> {/* Added padding */}
+      {/* Left side content (Title) */}
+      <div className="flex flex-row items-center justify-start gap-1"> 
+        {/* Removed original Home button */}
+        {/* Removed PanelRightClose/PanelLeftClose buttons as they were hidden */}
+        <ArtifactTitle
+          title={props.currentArtifactContent.title}
+          isArtifactSaved={props.isArtifactSaved}
+          artifactUpdateFailed={props.artifactUpdateFailed}
+        />
+      </div>
+
+      {/* Centered Button Group using mx-auto */}
+      <div className="flex items-center justify-center mx-auto"> {/* Use mx-auto for centering */}
+        {/* Standard button for click handling and layout */}
+        <button
+          onClick={handleReturnToWelcome}
+          className="flex items-center justify-center gap-2 text-gray-600 hover:text-gray-800 transition-colors cursor-pointer rounded p-1 hover:bg-gray-100" // Added hover bg and padding
+        >
+          {/* Tooltip wraps only the icon */}
+          <TooltipIconButton
+            tooltip="Tilbage til forsiden" 
+            variant="ghost" 
+            className="w-auto h-auto p-0" // Minimal styling, let parent button handle size/padding
+            delayDuration={300}
+            // Removed asChild prop
+          >
+             <Home className="w-5 h-5" />
+          </TooltipIconButton>
+          {/* Responsive text next to the icon */}
+          <span className="hidden md:inline text-lg">Tilbage til forsiden</span> 
+        </button>
+      </div>
+
+      {/* Right side content (History Navigation) */}
+      {/* Added flex-col and items-end for vertical alignment and right justification */}
+      <div className="flex flex-col items-end gap-1"> 
+        {/* Added headline */}
+        <div className="text-xs text-gray-500 mr-1">Skift mellem versioner</div> 
+        <NavigateArtifactHistory
+          isBackwardsDisabled={props.isBackwardsDisabled}
+          isForwardDisabled={props.isForwardDisabled}
+          setSelectedArtifact={props.setSelectedArtifact}
+          currentArtifactIndex={props.currentArtifactContent.index}
+          totalArtifactVersions={props.totalArtifactVersions}
+        />
+        {/* <ReflectionsDialog selectedAssistant={props.selectedAssistant} /> */}
+      </div>
+    </div>
+  );
+}
+
+/* Old structure for reference:
     <div className="flex flex-row items-center justify-between">
-      <div className="flex flex-row items-center justify-center gap-1"> {/* Reduced gap slightly */}
-        {/* Add the Home button here */}
+      <div className="flex flex-row items-center justify-center gap-1"> 
         <TooltipIconButton
           tooltip="Return to Welcome"
           variant="ghost"
-          className="ml-2 mb-1 w-8 h-8" /* Removed hidden class */
+          className="ml-2 mb-1 w-8 h-8" 
           delayDuration={400}
           onClick={handleReturnToWelcome}
         >
@@ -62,7 +115,7 @@ export function ArtifactHeader(props: ArtifactHeaderProps) {
             <PanelRightClose className="text-gray-600" />
           </TooltipIconButton>
         )}
-        {props.chatCollapsed && ( // Simplified condition
+        {props.chatCollapsed && ( 
           <TooltipIconButton
             tooltip="Expand Chat"
             variant="ghost"
@@ -87,8 +140,6 @@ export function ArtifactHeader(props: ArtifactHeaderProps) {
           currentArtifactIndex={props.currentArtifactContent.index}
           totalArtifactVersions={props.totalArtifactVersions}
         />
-        {/* <ReflectionsDialog selectedAssistant={props.selectedAssistant} /> */}
       </div>
     </div>
-  );
-}
+*/

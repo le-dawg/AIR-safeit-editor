@@ -101,16 +101,26 @@ export const Thread: FC<ThreadProps> = (props: ThreadProps) => {
 
   return (
     <ThreadPrimitive.Root className="flex flex-col h-full w-full">
-      <div className="pr-3 pl-6 pt-3 pb-2 flex flex-row gap-4 items-center justify-between bg-[rgba(20,110,98,0.29)]">
-        <button 
-          onClick={handleReturnToWelcome}
-          className="flex items-center justify-start gap-2 text-gray-600 hover:text-gray-800 transition-colors cursor-pointer"
-        >
-          <Home className="w-5 h-5" />
-          <TighterText className="text-xl">Safe-IT Journal Helper</TighterText>
-        </button>
-      </div>
+      {/* Conditionally render the header only when chat has started */}
+      {hasChatStarted && (
+        <div className="pr-3 pl-6 pt-3 pb-2 flex flex-row gap-4 items-center justify-between bg-[rgba(20,110,98,0.29)]">
+          {/* Wrapper div with mx-auto to center the button group */}
+          <div className="flex items-center justify-center gap-2 mx-auto">
+            <button
+              onClick={handleReturnToWelcome}
+              className="flex items-center justify-center gap-2 text-gray-600 hover:text-gray-800 transition-colors cursor-pointer"
+            >
+              <Home className="w-5 h-5" />
+              {/* Danish text, hidden below md breakpoint, shown md and up */}
+              <span className="md:inline text-xl">Tilbage til forsiden</span>
+            </button>
+          </div>
+          {/* Ensure there's space on the right if needed for justify-between */}
+          <div className="w-0"></div> {/* Placeholder or add actual right-side elements if any */}
+        </div>
+      )}
       <ThreadPrimitive.Viewport className="flex-1 overflow-y-auto scroll-smooth bg-inherit px-4 pt-8">
+        {/* Welcome screen is now correctly displayed ONLY when chat hasn't started */}
         {!hasChatStarted && (
           <ThreadWelcome
             handleQuickStart={handleQuickStart}

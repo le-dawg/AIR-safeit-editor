@@ -6,6 +6,7 @@ import {
   DEFAULT_MODEL_CONFIG,
   DEFAULT_MODEL_NAME,
 } from "@opencanvas/shared/models";
+// Removed Home icon import, no longer needed here
 import { useGraphContext } from "@/contexts/GraphContext";
 import { useToast } from "@/hooks/use-toast";
 import { getLanguageTemplate } from "@/lib/get_language_template";
@@ -30,8 +31,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 export function CanvasComponent() {
   const { graphData } = useGraphContext();
-  const { setModelName, setModelConfig } = useThreadContext();
+  // Removed clearState destructuring
   const { setArtifact, chatStarted, setChatStarted } = graphData;
+  // Removed setThreadId destructuring
+  const { setModelName, setModelConfig } = useThreadContext();
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [chatCollapsed, setChatCollapsed] = useState(true); // Set initial state to true to keep chat panel closed
@@ -233,9 +236,11 @@ export function CanvasComponent() {
             minSize={50}
             id="canvas-panel"
             order={2}
-            className="flex flex-row w-full"
+            // Restored original className
+            className="flex flex-row w-full" 
           >
-            <div className="w-full ml-auto">
+            {/* Removed button and padding div */}
+            <div className="w-full ml-auto"> 
               <ArtifactRenderer
                 chatCollapsed={chatCollapsed}
                 setChatCollapsed={(c) => {
