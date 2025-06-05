@@ -1,4 +1,4 @@
-# JounralHelper
+# JournalHelper
 
 [TRY IT OUT HERE](https://air-safeit-editor-frontend-v0-3.onrender.com)
 
