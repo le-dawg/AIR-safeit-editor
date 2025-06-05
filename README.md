@@ -1,8 +1,8 @@
 # Open Canvas
 
-[TRY IT OUT HERE](https://opencanvas.langchain.com/)
+[TRY IT OUT HERE]([https://opencanvas.langchain.com/](https://air-safeit-editor-frontend-v0-3.onrender.com))
 
-![Screenshot of app](./static/screenshot.png)
+![Screenshot of app](./static/Screenshot2025.png)
 
 Open Canvas is an open source web application for collaborating with agents to better write documents. It is inspired by [OpenAI's "Canvas"](https://openai.com/index/introducing-canvas/), but with a few key differences.
 
