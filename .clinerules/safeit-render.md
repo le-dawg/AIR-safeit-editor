@@ -1,4 +1,4 @@
-# Safe-IT Journal Helper - important things to always always know
+# JournalHelper - important things to always always know
 
 ## Project Overview
 This is a Next.js monorepo application with two distinct services:
