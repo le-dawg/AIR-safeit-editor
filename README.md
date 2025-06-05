@@ -1,6 +1,6 @@
 # Open Canvas
 
-[TRY IT OUT HERE]([https://opencanvas.langchain.com/](https://air-safeit-editor-frontend-v0-3.onrender.com))
+[TRY IT OUT HERE](https://air-safeit-editor-frontend-v0-3.onrender.com)
 
 ![Screenshot of app](./static/Screenshot2025.png)
 
