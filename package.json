@@ -1,8 +1,8 @@
 {
-  "name": "open_canvas",
-  "author": "Brace Sproul",
-  "homepage": "https://opencanvas.langchain.com",
-  "repository": "https://github.com/langchain-ai/open-canvas",
+  "name": "JournalHelper",
+  "author": "dawgctor",
+  "homepage": "https://air-safeit-editor-frontend-v0-3.onrender.com/",
+  "repository": "https://github.com/le-dawg/AIR-safeit-editor",
   "private": true,
   "workspaces": [
     "apps/*",
