@@ -76,4 +76,4 @@ return {
   ...optionallyUpdateArtifactResponse,
   type: optionallyUpdateArtifactResponse.type ?? "text",
   language: optionallyUpdateArtifactResponse.language ?? "markdown",
-};
+};}
