@@ -39,5 +39,6 @@ export const createArtifactContent = (
     type: "text",
     title: toolCall?.title,
     fullMarkdown: toolCall?.artifact,
+    language: "markdown",
   };
 };
