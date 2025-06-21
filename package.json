@@ -31,7 +31,7 @@
     "typescript": "^5"
   },
   "resolutions": {
-    "@langchain/core": "^0.3.38"
+    "@langchain/core": "^0.3.57"
   },
   "dependencies": {
     "eslint-plugin-unused-imports": "^4.1.4"
