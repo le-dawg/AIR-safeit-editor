@@ -51,13 +51,22 @@ export async function optionallyUpdateArtifactMeta(
     throw new Error("No recent human message found");
   }
 
+  const patchedRecentHumanMessage = {
+    ...recentHumanMessage,
+    type: (recentHumanMessage as any).type ?? "text",
+    language: (recentHumanMessage as any).language ?? "markdown"
+  };
+
   const isO1MiniModel = isUsingO1MiniModel(config);
   const optionallyUpdateArtifactResponse = await toolCallingModel.invoke([
     {
       role: isO1MiniModel ? "user" : "system",
       content: optionallyUpdateArtifactMetaPrompt,
+      type: "text",
+      language: "markdown", 
     },
-    recentHumanMessage,
+    // recentHumanMessage,
+    patchedRecentHumanMessage,
   ]);
 
   return optionallyUpdateArtifactResponse;
