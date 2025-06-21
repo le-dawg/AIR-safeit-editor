@@ -69,5 +69,11 @@ export async function optionallyUpdateArtifactMeta(
     patchedRecentHumanMessage,
   ]);
 
-  return optionallyUpdateArtifactResponse;
-}
+//   return optionallyUpdateArtifactResponse;
+// }
+
+return {
+  ...optionallyUpdateArtifactResponse,
+  type: optionallyUpdateArtifactResponse.type ?? "text",
+  language: optionallyUpdateArtifactResponse.language ?? "markdown",
+};
