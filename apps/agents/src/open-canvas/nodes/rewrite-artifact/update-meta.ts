@@ -58,16 +58,22 @@ export async function optionallyUpdateArtifactMeta(
   };
 
   const isO1MiniModel = isUsingO1MiniModel(config);
-  const optionallyUpdateArtifactResponse = await toolCallingModel.invoke([
-    {
-      role: isO1MiniModel ? "user" : "system",
-      content: optionallyUpdateArtifactMetaPrompt,
-      type: "text",
-      language: "markdown", 
-    },
-    // recentHumanMessage,
-    patchedRecentHumanMessage,
-  ]);
+  // Make a helper to strip only the allowed fields for the chat model
+function toChatModelMessage(msg: any): { role: string; content: string } {
+  return {
+    role: msg.role ?? "user",
+    content: msg.content ?? ""
+  };
+}
+
+// ...inside your function:
+const optionallyUpdateArtifactResponse = await toolCallingModel.invoke([
+  toChatModelMessage({
+    role: isO1MiniModel ? "user" : "system",
+    content: optionallyUpdateArtifactMetaPrompt,
+  }),
+  toChatModelMessage(recentHumanMessage)
+]);
 
 //   return optionallyUpdateArtifactResponse;
 // }
