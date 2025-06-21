@@ -102,6 +102,7 @@ export interface ArtifactMarkdownV3 {
   type: "text";
   title: string;
   fullMarkdown: string;
+  language: string;
 }
 
 export interface ArtifactCodeV3 {
