@@ -117,5 +117,6 @@ export const createNewArtifactContent = ({
     ...baseContent,
     type: "text",
     fullMarkdown: newContent,
+    language: "markdown",
   };
 };
