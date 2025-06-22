@@ -68,13 +68,13 @@ export function Signup() {
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
         <div className="absolute inset-0 bg-zinc-900" />
         <div className="relative z-20 flex gap-1 items-center text-lg font-medium">
-          <NextImage
+          {/* <NextImage
               src="/safe-it-logo.png"
               width={144}
               height={36}
               alt="Safe-IT Logo"
               className="rounded-full"
-            />
+            /> */}
             JournalHelper
           </div>
       </div>

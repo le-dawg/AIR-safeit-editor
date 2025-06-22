@@ -143,11 +143,11 @@ export const ThreadWelcome: FC<ThreadWelcomeProps> = (
   return (
     <>
       <div className="text-center mb-4">
-        <img
+        {/* <img
           src="/safe-it-logo.png"
           alt="Logo"
           style={{ width: '140px', height: '50px', margin: '0 auto' }}
-        />
+        /> */}
         <h1 className="text-2xl font-bold mt-4">JournalHelper</h1>
         {isSessionActive && (
           <TooltipIconButton
