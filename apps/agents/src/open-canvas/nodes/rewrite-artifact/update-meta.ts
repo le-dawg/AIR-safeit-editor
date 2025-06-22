@@ -51,12 +51,6 @@ export async function optionallyUpdateArtifactMeta(
     throw new Error("No recent human message found");
   }
 
-  const patchedRecentHumanMessage = {
-    ...recentHumanMessage,
-    type: (recentHumanMessage as any).type ?? "text",
-    language: (recentHumanMessage as any).language ?? "markdown"
-  };
-
   const isO1MiniModel = isUsingO1MiniModel(config);
   // Make a helper to strip only the allowed fields for the chat model
 function toChatModelMessage(msg: any): { role: string; content: string } {
