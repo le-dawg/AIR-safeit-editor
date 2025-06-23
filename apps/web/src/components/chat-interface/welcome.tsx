@@ -169,7 +169,7 @@ export const ThreadWelcome: FC<ThreadWelcomeProps> = (
           <div className="text-center max-w-xl w-full">
             <Avatar className="mx-auto">
               {/* <AvatarImage src="/safe-it-logo.png" alt="Safe-IT Logo" className="object-cover cropped-bg" /> */}
-              <AvatarFallback>JH</AvatarFallback>
+              {/* <AvatarFallback>JH</AvatarFallback> */}
             </Avatar>
             <TighterText className="text-lg font-medium">
               Velkommen til din personlige hjælpegitr
