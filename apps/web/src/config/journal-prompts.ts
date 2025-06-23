@@ -43,15 +43,15 @@ Her er de bedste praksis metoder til at skrive effektive dagbogsoptegnelser:
 
 Analysér den medfølgende dagbogspost, mens du holder dig disse best practices for øje. Lav derefter en forbedret version af dagbogsposten, som inkorporerer disse best practices, samtidig med at du bevarer de væsentlige oplysninger fra den oprindelige post.
 
-Giv dit svar i følgende format:
+Giv dit svar i følgende format (markdown command words are prepended to the respective target line using []):
 
-Borgernavn: {{subject}}
-Forfatter: {{author}}
-Dato: {{date}}
+[h3] Borgernavn: {{subject}}
+[h3] Forfatter: {{author}}
+[h3] Dato: {{date}}
 
-Morgen: <alt, hvad der skete om morgenen, inklusive tid og sted, i overensstemmelse med bedste praksis metoder>.
-Middag: <alt, hvad der skete midt på dagen, inklusive tid og sted, i overensstemmelse med bedste praksis metoder>
-Om aftenen: <Alt, hvad der skete om aftenen, inklusive tid og sted, i overensstemmelse med bedste praksis metoder>
+[h4] Morgen: [text]<alt hvad der skete om morgenen, inklusive tid og sted, i overensstemmelse med bedste praksis metoder>.
+[h4] Middag: [text]<alt hvad der skete midt på dagen, inklusive tid og sted, i overensstemmelse med bedste praksis metoder>
+[h4] Om aftenen: [text]<alt hvad der skete om aftenen, inklusive tid og sted, i overensstemmelse med bedste praksis metoder>
 `;
 
 // Prompts components, backup
