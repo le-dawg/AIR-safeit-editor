@@ -68,13 +68,13 @@ export function Login() {
       <div className="relative hidden h-full flex-col bg-muted p-10 dark:border-r lg:flex">
         <div className="absolute inset-0 bg-slate-100" />
         <div className="relative z-20 flex gap-1 items-center text-lg font-medium">
-          <NextImage
+          {/* <NextImage
             src="/safe-it-logo.png"
             width={144}
             height={36}
             alt="Safe-IT Logo"
             className="rounded-full"
-          />
+          /> */}
           JournalHelper
         </div>
       </div>
@@ -98,7 +98,7 @@ export function Login() {
           />
           {isError && (
             <p className="text-red-500 text-sm text-center">
-              There was an error signing into your account. Please try again.
+              Der opstod en fejl, da du loggede på din konto. Prøv venligst igen.
             </p>
           )}
         </div>
