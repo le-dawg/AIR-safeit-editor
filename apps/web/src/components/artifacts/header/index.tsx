@@ -57,6 +57,7 @@ export function ArtifactHeader(props: ArtifactHeaderProps) {
         <button
           onClick={handleReturnToWelcome}
           className="flex items-center justify-center gap-2 text-gray-600 hover:text-gray-800 transition-colors cursor-pointer rounded p-1 hover:bg-gray-100" // Added hover bg and padding
+          id="nobackground"
         >
           {/* Tooltip wraps only the icon */}
           <TooltipIconButton
@@ -64,6 +65,7 @@ export function ArtifactHeader(props: ArtifactHeaderProps) {
             variant="ghost" 
             className="w-auto h-auto p-0" // Minimal styling, let parent button handle size/padding
             delayDuration={300}
+            id="nobackground"
             // Removed asChild prop
           >
              <Home className="w-5 h-5" />

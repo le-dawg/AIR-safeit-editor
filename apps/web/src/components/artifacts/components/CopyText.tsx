@@ -12,7 +12,7 @@ export function CopyText(props: CopyTextProps) {
   return (
     <button
       type="button"
-      className="flex items-center justify-center text-black w-full h-12 px-4 py-2 text-sm font-medium bg-primary-500 border border-transparent rounded-md shadow-sm hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+      className="flex items-center justify-center text-black w-full h-12 px-4 py-2 text-sm font-medium bg-customTealFaint border border-transparent rounded-md shadow-sm hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
       onClick={() => {
         try {
           const text = isArtifactCodeContent(props.currentArtifactContent)
@@ -20,8 +20,8 @@ export function CopyText(props: CopyTextProps) {
             : props.currentArtifactContent.fullMarkdown;
           navigator.clipboard.writeText(text).then(() => {
             toast({
-              title: "Copied to clipboard",
-              description: "Your journal draft has been copied.",
+              title: "Kopieret til udklipsholder",
+              description: "Dit dagbogsudkast er blevet kopieret.",
               duration: 5000,
             });
           });
@@ -29,7 +29,7 @@ export function CopyText(props: CopyTextProps) {
           toast({
             title: "Copy error",
             description:
-              "Failed to copy your journal draft. Please try again.",
+              "Kunne ikke kopiere dit dagbogsudkast. Prøv venligst igen.",
             duration: 5000,
           });
         }

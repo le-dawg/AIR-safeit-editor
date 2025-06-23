@@ -106,6 +106,7 @@ const config: Config = {
           '5': 'hsl(var(--chart-5))',
         },
         customTeal: 'rgba(20,110,98,0.29)',
+        customTealFaint: 'rgba(20, 110, 98, 0.14)',
       },
       fontFamily: {
         mono: [

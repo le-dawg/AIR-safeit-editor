@@ -26,11 +26,11 @@ export function NavigateArtifactHistory(props: NavigateArtifactHistoryProps) {
           }
         }}
         disabled={props.isBackwardsDisabled}
-        className="w-fit h-fit p-2"
+        className="w-fit h-fit p-2 bg-customTealFaint"
       >
         <Forward
           aria-disabled={props.isBackwardsDisabled}
-          className="w-6 h-6 text-gray-600 scale-x-[-1]"
+          className="w-6 h-6 text-black scale-x-[-1]"
         />
       </TooltipIconButton>
       <TooltipIconButton
@@ -44,11 +44,11 @@ export function NavigateArtifactHistory(props: NavigateArtifactHistoryProps) {
           }
         }}
         disabled={props.isForwardDisabled}
-        className="w-fit h-fit p-2"
+        className="w-fit h-fit p-2 bg-customTealFaint"
       >
         <Forward
           aria-disabled={props.isForwardDisabled}
-          className="w-6 h-6 text-gray-600"
+          className="w-6 h-6 text-black"
         />
       </TooltipIconButton>
     </div>
