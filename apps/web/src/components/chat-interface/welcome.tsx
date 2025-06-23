@@ -143,11 +143,11 @@ export const ThreadWelcome: FC<ThreadWelcomeProps> = (
   return (
     <>
       <div className="text-center mb-4">
-        <img
+        {/* <img
           src="/safe-it-logo.png"
           alt="Logo"
           style={{ width: '140px', height: '50px', margin: '0 auto' }}
-        />
+        /> */}
         <h1 className="text-2xl font-bold mt-4">JournalHelper</h1>
         {isSessionActive && (
           <TooltipIconButton
@@ -168,11 +168,11 @@ export const ThreadWelcome: FC<ThreadWelcomeProps> = (
         <div className="flex items-center justify-center mt-16 w-full">
           <div className="text-center max-w-xl w-full">
             <Avatar className="mx-auto">
-              <AvatarImage src="/safe-it-logo.png" alt="Safe-IT Logo" className="object-cover cropped-bg" />
-              <AvatarFallback>SI</AvatarFallback>
+              {/* <AvatarImage src="/safe-it-logo.png" alt="Safe-IT Logo" className="object-cover cropped-bg" /> */}
+              <AvatarFallback>JH</AvatarFallback>
             </Avatar>
             <TighterText className="text-lg font-medium">
-              Velkommen til din personlige hjælper
+              Velkommen til din personlige hjælpegitr
             </TighterText>
             <div className="mt-8 w-full">
               <JournalEntryForm handleQuickStart={props.handleQuickStart} handleSubmit={handleSubmit} />
