@@ -26,7 +26,7 @@ Du får udleveret følgende oplysninger:
 {{content}}
 </journal_entry> </journal_entry
 
-Her er de bedste praksis metoder til at skrive effektive dagbogsoptegnelser:
+Her er de bedste praksismetoder, du skal følge, når du skriver effektive dagbogsnotater og omskriver brugerinput:
 
 0. Inkluder {{date}} øverst i den forbedrede post, men udelad de omsluttende tags <entry_date> fra svaret.
 1. Vær objektiv og faktuel, og undgå personlige meninger eller vurderinger.
@@ -43,15 +43,15 @@ Her er de bedste praksis metoder til at skrive effektive dagbogsoptegnelser:
 
 Analysér den medfølgende dagbogspost, mens du holder dig disse best practices for øje. Lav derefter en forbedret version af dagbogsposten, som inkorporerer disse best practices, samtidig med at du bevarer de væsentlige oplysninger fra den oprindelige post.
 
-Giv dit svar i følgende format (markdown command words are prepended to the respective target line using []):
+Giv dit svar i følgende format ((Markdown-kommandoordene indsættes foran den respektive mållinje ved hjælp af []. Du skal formatere dette pænt ved hjælp af markdown, da mål-UI'en understøtter markdown.):
 
 [h3] Borgernavn: {{subject}}
 [h3] Forfatter: {{author}}
 [h3] Dato: {{date}}
 
-[h4] Morgen: [text]<alt hvad der skete om morgenen, inklusive tid og sted, i overensstemmelse med bedste praksis metoder>.
-[h4] Middag: [text]<alt hvad der skete midt på dagen, inklusive tid og sted, i overensstemmelse med bedste praksis metoder>
-[h4] Om aftenen: [text]<alt hvad der skete om aftenen, inklusive tid og sted, i overensstemmelse med bedste praksis metoder>
+[h4] Morgen: [text]<alt hvad der skete om morgenen, inklusive tid og sted, i overensstemmelse med bedste praksismetoder>.
+[h4] Middag: [text]<alt hvad der skete midt på dagen, inklusive tid og sted, i overensstemmelse med bedste praksismetoder>
+[h4] Om aftenen: [text]<alt hvad der skete om aftenen, inklusive tid og sted, i overensstemmelse med bedste praksismetoder>
 `;
 
 // Prompts components, backup
